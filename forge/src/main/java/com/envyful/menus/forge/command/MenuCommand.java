@@ -15,7 +15,8 @@ import net.minecraft.util.text.TextComponentString;
 @Permissible("menus.command.menu")
 @SubCommands({
         ListCommand.class,
-        LoadCommand.class
+        LoadCommand.class,
+        OpenCommand.class
 })
 public class MenuCommand {
 

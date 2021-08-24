@@ -17,7 +17,7 @@ import java.io.File;
         value = "load",
         description = "Loads menus from file(s) - /menus load <file>"
 )
-@Permissible("blaze.menus.admin.load")
+@Permissible("menus.command.load")
 @Child
 public class LoadCommand {
 
