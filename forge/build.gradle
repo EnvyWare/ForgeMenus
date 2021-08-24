@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven {
+            name = 'forge'
+            url = 'https://files.minecraftforge.net/maven'
+        }
+        maven {
+            url = 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.+', changing: true
+    }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+
+minecraft {
+    mappings channel: 'snapshot', version: '20180814-1.12'
+}
+
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    maven {
+        name = 'spongepowered-repo'
+        url = 'https://repo.spongepowered.org/maven'
+    }
+
+    maven { url 'https://jitpack.io' }
+
+    flatDir {
+        dirs '../../Libraries/'
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
+
+    compileOnly 'com.github.Pixelmon-Development.ForgePlaceholderAPI:api:0.0.1'
+
+    shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
+
+    shadow group: 'com.github.Pixelmon-Development.API', name: 'commons', version: '0.2.0'
+    shadow group: 'com.github.Pixelmon-Development.API', name: 'forge', version: '0.2.0'
+
+    shadow (group: 'com.github.Pixelmon-Development.bStats-Metrics', name: 'bstats-base', version: '2.2.8') {
+        transitive = false
+    }
+    shadow (group: 'com.github.Pixelmon-Development.bStats-Metrics', name: 'bstats-forge', version: '2.2.8') {
+        transitive = false
+    }
+
+}
+
+shadowJar {
+    configurations = [project.configurations.shadow]
+    archiveName = rootProject.name + '-Forge.jar'
+
+    relocate('org.spongepowered.configurate', 'com.envyful.menus.forge.shade.configurate')
+    relocate('org.yaml.snakeyaml', 'com.envyful.menus.forge.shade.snakeyaml')
+    relocate('io.leangen.geantyref', 'com.envyful.menus.forge.shade.geantyref')
+    relocate('com.google.gson', 'com.envyful.menus.forge.shade.gson')
+    relocate('com.zaxxer', 'com.envyful.menus.forge.shade.hikari')
+    relocate('org.slf4j', 'com.envyful.menus.forge.shade.slf4j')
+    relocate('com.envyful.api', 'com.envyful.menus.forge.shade.envy.api')
+    relocate('org.bstats', 'com.envyful.menus.forge.shade.bstats')
+
+
+    exclude "**/module-info.class"
+}
+
+reobf {
+    shadowJar {
+        classpath = sourceSets.main.compileClasspath
+    }
+}
+
+jar.finalizedBy('reobfJar')
