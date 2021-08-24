@@ -5,6 +5,9 @@ import com.envyful.api.forge.concurrency.ForgeUpdateBuilder;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
 import com.envyful.api.forge.player.ForgePlayerManager;
 import com.envyful.api.gui.factory.GuiFactory;
+import com.envyful.menus.forge.data.Menu;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -12,6 +15,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.bstats.forge.Metrics;
 
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.Map;
 
 @Mod(
         modid = "menus",
@@ -27,6 +32,8 @@ public class MenusForge {
 
     private ForgePlayerManager playerManager = new ForgePlayerManager();
     private ForgeCommandFactory commandFactory = new ForgeCommandFactory();
+
+    private Map<String, Menu> loadedMenus = Maps.newHashMap();
 
     @Mod.EventHandler
     public void onServerStarting(FMLPreInitializationEvent event) {
@@ -61,5 +68,9 @@ public class MenusForge {
 
     public ForgePlayerManager getPlayerManager() {
         return this.playerManager;
+    }
+
+    public List<String> getLoadedNames() {
+        return Lists.newArrayList(this.loadedMenus.keySet());
     }
 }
