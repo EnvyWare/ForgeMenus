@@ -1,5 +1,6 @@
 package com.envyful.menus.forge;
 
+import com.envyful.api.concurrency.UtilConcurrency;
 import com.envyful.api.forge.command.ForgeCommandFactory;
 import com.envyful.api.forge.concurrency.ForgeUpdateBuilder;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
@@ -41,6 +42,10 @@ public class MenusForge {
     @Mod.EventHandler
     public void onServerStarting(FMLPreInitializationEvent event) {
         instance = this;
+
+        UtilConcurrency.runAsync(() -> {
+            this.handleDirectory(new File(MenuConfig.PATH));
+        });
 
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
 
