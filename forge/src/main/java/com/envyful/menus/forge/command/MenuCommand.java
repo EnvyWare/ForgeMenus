@@ -16,7 +16,8 @@ import net.minecraft.util.text.TextComponentString;
 @SubCommands({
         ListCommand.class,
         LoadCommand.class,
-        OpenCommand.class
+        OpenCommand.class,
+        ReloadCommand.class
 })
 public class MenuCommand {
 

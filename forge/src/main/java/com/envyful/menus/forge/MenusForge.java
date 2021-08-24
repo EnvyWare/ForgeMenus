@@ -5,6 +5,7 @@ import com.envyful.api.forge.concurrency.ForgeUpdateBuilder;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
 import com.envyful.api.forge.player.ForgePlayerManager;
 import com.envyful.api.gui.factory.GuiFactory;
+import com.envyful.menus.forge.command.MenuCommand;
 import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.data.Menu;
 import com.google.common.collect.Lists;
@@ -61,7 +62,7 @@ public class MenusForge {
 
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartingEvent event) {
-
+        this.commandFactory.registerCommand(event.getServer(), new MenuCommand());
     }
 
     public static MenusForge getInstance() {
