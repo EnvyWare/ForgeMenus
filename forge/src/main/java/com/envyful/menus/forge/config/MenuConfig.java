@@ -9,7 +9,7 @@ import java.io.File;
 
 public class MenuConfig extends Configurable {
 
-    public static final String PATH = "Menus" + File.separator + "menus";
+    public static final String PATH = "config" + File.separator + "Menus" + File.separator + "menus";
 
     public MenuConfig(String name) {
         super(PATH + File.separator + name);

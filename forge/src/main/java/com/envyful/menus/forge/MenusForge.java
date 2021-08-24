@@ -5,6 +5,7 @@ import com.envyful.api.forge.concurrency.ForgeUpdateBuilder;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
 import com.envyful.api.forge.player.ForgePlayerManager;
 import com.envyful.api.gui.factory.GuiFactory;
+import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.data.Menu;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -14,6 +15,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.bstats.forge.Metrics;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -72,5 +74,37 @@ public class MenusForge {
 
     public List<String> getLoadedNames() {
         return Lists.newArrayList(this.loadedMenus.keySet());
+    }
+
+
+    public void handleDirectory(File file) {
+        if(file.listFiles() == null) {
+            return;
+        }
+
+        for (File listFile : file.listFiles()) {
+            if(listFile.isDirectory()) {
+                handleDirectory(listFile);
+                continue;
+            }
+
+            if(!listFile.getName().endsWith(".yml")) {
+                continue;
+            }
+
+            String name = listFile.getPath().replace((MenuConfig.PATH + File.separator), "")
+                    .replace(".yml", "");
+            Menu menu = new Menu(name);
+
+            this.addMenu(menu);
+        }
+    }
+
+    public void addMenu(Menu menu) {
+        this.loadedMenus.put(menu.getIdentifier().toLowerCase(), menu);
+    }
+
+    public Menu getMenu(String id) {
+        return this.loadedMenus.get(id);
     }
 }

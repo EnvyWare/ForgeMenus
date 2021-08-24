@@ -13,9 +13,10 @@ import net.minecraft.util.text.TextComponentString;
         description = "/menus reload <name> | /menu load <path> | /menu list | /menu open <name>"
 )
 @Permissible("menus.command.menu")
-@SubCommands(
-        ListCommand.class
-)
+@SubCommands({
+        ListCommand.class,
+        LoadCommand.class
+})
 public class MenuCommand {
 
     @CommandProcessor
