@@ -19,7 +19,7 @@ import net.minecraft.util.text.TextComponentString;
 public class ReloadCommand {
 
     @CommandProcessor
-    protected void run(@Sender ICommandSender sender, String[] args) {
+    public void run(@Sender ICommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(new TextComponentString("Reloads a menu - /menus reload <name>"));
             return;

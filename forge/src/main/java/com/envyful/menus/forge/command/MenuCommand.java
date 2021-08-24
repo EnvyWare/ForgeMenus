@@ -22,7 +22,7 @@ import net.minecraft.util.text.TextComponentString;
 public class MenuCommand {
 
     @CommandProcessor
-    protected void run(@Sender ICommandSender sender, String[] args) {
+    public void run(@Sender ICommandSender sender, String[] args) {
         sender.sendMessage(new TextComponentString("/menus reload <name> | /menu load <path> | /menu list | /menu open <name>"));
     }
 }

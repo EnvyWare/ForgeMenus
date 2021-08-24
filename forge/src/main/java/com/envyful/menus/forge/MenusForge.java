@@ -43,6 +43,8 @@ public class MenusForge {
     public void onServerStarting(FMLPreInitializationEvent event) {
         instance = this;
 
+        GuiFactory.setPlatformFactory(new ForgeGuiFactory());
+
         UtilConcurrency.runAsync(() -> {
             File file = new File(MenuConfig.PATH);
 
@@ -56,8 +58,6 @@ public class MenusForge {
                 this.addMenu(new Menu("example"));
             }
         });
-
-        GuiFactory.setPlatformFactory(new ForgeGuiFactory());
 
         Metrics metrics = new Metrics(
                 Loader.instance().activeModContainer(),
@@ -117,7 +117,7 @@ public class MenusForge {
     }
 
     public void addMenu(Menu menu) {
-        if (menu == null) {
+        if (menu == null || menu.getIdentifier() == null) {
             return;
         }
 

@@ -18,7 +18,7 @@ import net.minecraft.util.text.TextComponentString;
 public class ListCommand {
 
     @CommandProcessor
-    protected void run(@Sender ICommandSender sender, String[] args) {
+    public void run(@Sender ICommandSender sender, String[] args) {
         if (args.length != 0) {
             sender.sendMessage(new TextComponentString("/menus list - Lists all menus"));
             return;

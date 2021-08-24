@@ -19,7 +19,7 @@ import net.minecraft.util.text.TextComponentString;
 public class OpenCommand {
 
     @CommandProcessor
-    protected void run(@Sender EntityPlayerMP sender, String[] args) {
+    public void run(@Sender EntityPlayerMP sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(new TextComponentString("Opens the gui - /menus open <name>"));
             return;

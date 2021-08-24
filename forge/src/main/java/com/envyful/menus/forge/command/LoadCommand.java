@@ -22,7 +22,7 @@ import java.io.File;
 public class LoadCommand {
 
     @CommandProcessor
-    protected void run(@Sender ICommandSender sender, String[] args) {
+    public void run(@Sender ICommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(new TextComponentString("Loads menus from file(s) - /menus load <file>"));
             return;

@@ -21,15 +21,6 @@ public abstract class Configurable {
     public Configurable(String name) {
         this.name = name;
         this.file = Paths.get(name);
-
-        if (!file.toFile().exists()) {
-            try {
-                file.toFile().createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
         this.loader = YamlConfigurationLoader.builder().path(this.file).build();
 
         this.setup();
@@ -70,6 +61,7 @@ public abstract class Configurable {
             Files.createFile(this.file);
             this.load();
             this.populate();
+            System.out.println("SAVING");
             this.save();
         } catch (IOException var3) {
             var3.printStackTrace();
