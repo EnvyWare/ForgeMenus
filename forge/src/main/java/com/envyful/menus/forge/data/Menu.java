@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.List;
@@ -118,13 +117,12 @@ public class Menu {
             } else {
                 command = command.split("player:")[1];
 
-                FMLCommonHandler.instance().getMinecraftServerInstance().getCommandManager()
-                        .executeCommand(player.getParent(), command);
+                player.executeCommand(command);
             }
         }
     }
 
-    public void open(EntityPlayerMP player) {
+    public void open(EnvyPlayer<EntityPlayerMP> player) {
         new GenericUI(player, this.name, this.height, this.items, this.closeCommands);
     }
 }
