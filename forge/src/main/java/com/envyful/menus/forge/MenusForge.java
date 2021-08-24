@@ -45,6 +45,10 @@ public class MenusForge {
 
         UtilConcurrency.runAsync(() -> {
             this.handleDirectory(new File(MenuConfig.PATH));
+
+            if (!this.loadedMenus.containsKey("example")) {
+                this.addMenu(new Menu("example"));
+            }
         });
 
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
