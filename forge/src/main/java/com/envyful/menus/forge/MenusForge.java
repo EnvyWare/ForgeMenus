@@ -63,7 +63,7 @@ public class MenusForge {
                 Loader.instance().activeModContainer(),
                 event.getModLog(),
                 Paths.get("config/"),
-                12565 //TODO:
+                12581
         );
 
         ForgeUpdateBuilder.instance()
