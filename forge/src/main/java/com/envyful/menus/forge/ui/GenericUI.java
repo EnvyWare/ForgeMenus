@@ -8,8 +8,8 @@ import com.envyful.api.gui.pane.Pane;
 import com.envyful.api.player.EnvyPlayer;
 import com.envyful.api.type.Pair;
 import com.envyful.menus.forge.MenusForge;
+import com.envyful.papi.api.util.UtilPlaceholder;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.List;
 import java.util.Map;
@@ -37,7 +37,7 @@ public class GenericUI {
     private void handleClose(List<String> commands) {
         UtilForgeConcurrency.runSync(() -> {
             for (String command : commands) {
-                command = command.replace("%player%", this.player.getParent().getName());
+                command = UtilPlaceholder.replaceIdentifiers(this.player.getParent(), command);
 
                 if (command.startsWith("console:")) {
                     command = command.split("console:")[1];

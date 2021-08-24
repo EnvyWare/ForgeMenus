@@ -9,6 +9,7 @@ import com.envyful.api.player.EnvyPlayer;
 import com.envyful.api.type.Pair;
 import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.ui.GenericUI;
+import com.envyful.papi.api.util.UtilPlaceholder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -108,7 +109,7 @@ public class Menu {
                 continue;
             }
 
-            command = command.replace("%player%", player.getParent().getName());
+            command = UtilPlaceholder.replaceIdentifiers(player.getParent(), command);
 
             if (command.startsWith("console:")) {
                 command = command.split("console:")[1];
