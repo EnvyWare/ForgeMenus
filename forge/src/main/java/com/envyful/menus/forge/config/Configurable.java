@@ -20,7 +20,16 @@ public abstract class Configurable {
 
     public Configurable(String name) {
         this.name = name;
-        this.file = Paths.get("config" + File.separator + this.name);
+        this.file = Paths.get(name);
+
+        if (!file.toFile().exists()) {
+            try {
+                file.toFile().createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         this.loader = YamlConfigurationLoader.builder().path(this.file).build();
 
         this.setup();

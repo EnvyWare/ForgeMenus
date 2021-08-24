@@ -44,6 +44,12 @@ public class MenusForge {
         instance = this;
 
         UtilConcurrency.runAsync(() -> {
+            File file = new File(MenuConfig.PATH);
+
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+
             this.handleDirectory(new File(MenuConfig.PATH));
 
             if (!this.loadedMenus.containsKey("example")) {
@@ -111,6 +117,10 @@ public class MenusForge {
     }
 
     public void addMenu(Menu menu) {
+        if (menu == null) {
+            return;
+        }
+
         this.loadedMenus.put(menu.getIdentifier().toLowerCase(), menu);
     }
 
