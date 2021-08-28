@@ -57,7 +57,7 @@ public class Menu {
         this.identifier = this.config.getNode().node("inventory", "identifier").getString();
         this.name = this.config.getNode().node("inventory", "name").getString();
         this.height = this.config.getNode().node("inventory", "height").getInt();
-        this.permission = this.config.getNode().node("inventory", "permission").getString();
+        this.permission = this.config.getNode().node("inventory", "permission").getString("menu." + this.identifier);
         this.closeCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "close-commands");
         this.openCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "open-commands");
         this.items = Maps.newHashMap();

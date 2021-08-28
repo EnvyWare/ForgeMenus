@@ -10,6 +10,7 @@ import com.envyful.menus.forge.MenusForge;
 import com.envyful.menus.forge.data.Menu;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.server.permission.PermissionAPI;
 
 @Command(
         value = "open",
@@ -33,7 +34,10 @@ public class OpenCommand {
             return;
         }
 
-        if (!sender.canUseCommand(4, menu.getPermission())) {
+        System.out.println("TEST");
+
+        if (!PermissionAPI.hasPermission(sender, menu.getPermission())
+                && !sender.canUseCommand(4, menu.getPermission())) {
             sender.sendMessage(new TextComponentString(UtilChatColour.translateColourCodes('&',
                     "&c&l(!) &cYou don't have permission for this menu")));
             return;
