@@ -146,7 +146,7 @@ public class Menu {
                 } else {
                     command = command.split("player:")[1];
 
-                    this.player.executeCommand(command);
+                    player.executeCommand(command);
                 }
             }
         });
