@@ -91,6 +91,11 @@ public class Menu {
 
             itemStack.getOrCreateSubCompound("UnsafeData").setString("tooltip", tooltip);
 
+            for (ConfigurationNode nbtNode : value.node("nbt").childrenMap().values()) {
+                itemStack.getOrCreateSubCompound("UnsafeData").setString(nbtNode.node("key").getString(),
+                        nbtNode.node("value").getString(""));
+            }
+
             List<Pair<Integer, Integer>> positions = Lists.newArrayList(position);
 
             for (int slots : UtilConfig.getList(value, Integer.class, "slots")) {
