@@ -29,6 +29,7 @@ public class Menu {
     private String identifier;
     private String name;
     private int height;
+    private String permission;
     private List<String> closeCommands;
     private Map<Pair<Integer, Integer>, Displayable> items;
 
@@ -42,6 +43,10 @@ public class Menu {
         return this.identifier;
     }
 
+    public String getPermission() {
+        return this.permission;
+    }
+
     public void reloadConfig() {
         this.config = new MenuConfig(fileIdentifier + ".yml");
     }
@@ -50,6 +55,7 @@ public class Menu {
         this.identifier = this.config.getNode().node("inventory", "identifier").getString();
         this.name = this.config.getNode().node("inventory", "name").getString();
         this.height = this.config.getNode().node("inventory", "height").getInt();
+        this.permission = this.config.getNode().node("inventory", "permission").getString();
         this.closeCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "close-commands");
         this.items = Maps.newHashMap();
 

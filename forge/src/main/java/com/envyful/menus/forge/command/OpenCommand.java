@@ -5,6 +5,7 @@ import com.envyful.api.command.annotate.Command;
 import com.envyful.api.command.annotate.Permissible;
 import com.envyful.api.command.annotate.executor.CommandProcessor;
 import com.envyful.api.command.annotate.executor.Sender;
+import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.menus.forge.MenusForge;
 import com.envyful.menus.forge.data.Menu;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -29,6 +30,12 @@ public class OpenCommand {
 
         if(menu == null) {
             sender.sendMessage(new TextComponentString("Menu doesn't exist!"));
+            return;
+        }
+
+        if (!sender.canUseCommand(4, menu.getPermission())) {
+            sender.sendMessage(new TextComponentString(UtilChatColour.translateColourCodes('&',
+                    "&c&l(!) &cYou don't have permission for this menu")));
             return;
         }
 
