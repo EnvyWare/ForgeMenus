@@ -1,6 +1,7 @@
 package com.envyful.menus.forge.data;
 
 import com.envyful.api.config.util.UtilConfig;
+import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.items.ItemBuilder;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
@@ -31,6 +32,7 @@ public class Menu {
     private int height;
     private String permission;
     private List<String> closeCommands;
+    private List<String> openCommands;
     private Map<Pair<Integer, Integer>, Displayable> items;
 
     public Menu(String fileIdentifier) {
@@ -57,6 +59,7 @@ public class Menu {
         this.height = this.config.getNode().node("inventory", "height").getInt();
         this.permission = this.config.getNode().node("inventory", "permission").getString();
         this.closeCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "close-commands");
+        this.openCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "open-commands");
         this.items = Maps.newHashMap();
 
         for (ConfigurationNode value : this.config.getNode().node("inventory", "items").childrenMap().values()) {
@@ -131,5 +134,21 @@ public class Menu {
 
     public void open(EnvyPlayer<EntityPlayerMP> player) {
         new GenericUI(player, this.name, this.height, this.items, this.closeCommands);
+
+        UtilForgeConcurrency.runSync(() -> {
+            for (String command : this.openCommands) {
+                command = UtilPlaceholder.replaceIdentifiers(player.getParent(), command);
+
+                if (command.startsWith("console:")) {
+                    command = command.split("console:")[1];
+
+                    UtilForgeServer.executeCommand(command);
+                } else {
+                    command = command.split("player:")[1];
+
+                    this.player.executeCommand(command);
+                }
+            }
+        });
     }
 }
