@@ -2,7 +2,6 @@ package com.envyful.menus.forge;
 
 import com.envyful.api.concurrency.UtilConcurrency;
 import com.envyful.api.forge.command.ForgeCommandFactory;
-import com.envyful.api.forge.concurrency.ForgeUpdateBuilder;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
 import com.envyful.api.forge.player.ForgePlayerManager;
 import com.envyful.api.gui.factory.GuiFactory;
@@ -30,7 +29,7 @@ import java.util.Map;
 )
 public class MenusForge {
 
-    protected static final String VERSION = "0.1.0";
+    protected static final String VERSION = "0.3.0";
 
     private static MenusForge instance;
 
@@ -65,14 +64,6 @@ public class MenusForge {
                 Paths.get("config/"),
                 12581
         );
-
-        ForgeUpdateBuilder.instance()
-                .name("ForgeMenus")
-                .requiredPermission("menus.update.notify")
-                .owner("Pixelmon-Development")
-                .repo("ForgeMenus")
-                .version(VERSION)
-                .start();
     }
 
     @Mod.EventHandler

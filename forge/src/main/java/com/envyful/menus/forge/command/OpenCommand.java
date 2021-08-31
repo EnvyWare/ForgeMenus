@@ -34,8 +34,6 @@ public class OpenCommand {
             return;
         }
 
-        System.out.println("TEST");
-
         if (!PermissionAPI.hasPermission(sender, menu.getPermission())
                 && !sender.canUseCommand(4, menu.getPermission())) {
             sender.sendMessage(new TextComponentString(UtilChatColour.translateColourCodes('&',

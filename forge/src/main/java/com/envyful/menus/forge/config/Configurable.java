@@ -61,7 +61,6 @@ public abstract class Configurable {
             Files.createFile(this.file);
             this.load();
             this.populate();
-            System.out.println("SAVING");
             this.save();
         } catch (IOException var3) {
             var3.printStackTrace();
