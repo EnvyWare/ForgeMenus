@@ -96,7 +96,7 @@ public class Menu {
                         nbtNode.node("value").getString(""));
             }
 
-            List<Pair<Integer, Integer>> positions = Lists.newArrayList(position);
+            List<Pair<Integer, Integer>> positions = Lists.newArrayList();
 
             for (int slots : UtilConfig.getList(value, Integer.class, "slots")) {
                 positions.add(Pair.of(slots % 9, slots / 9));
