@@ -10,14 +10,11 @@ import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.data.Menu;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import org.bstats.forge.Metrics;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +36,7 @@ public class MenusForge {
     private Map<String, Menu> loadedMenus = Maps.newHashMap();
 
     @Mod.EventHandler
-    public void onServerStarting(FMLPreInitializationEvent event) {
+    public void onServerStarting(FMLServerStartedEvent event) {
         instance = this;
 
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
@@ -58,17 +55,7 @@ public class MenusForge {
             }
         });
 
-        Metrics metrics = new Metrics(
-                Loader.instance().activeModContainer(),
-                event.getModLog(),
-                Paths.get("config/"),
-                12581
-        );
-    }
-
-    @Mod.EventHandler
-    public void onServerStarting(FMLServerStartingEvent event) {
-        this.commandFactory.registerCommand(event.getServer(), new MenuCommand());
+        this.commandFactory.registerCommand(FMLCommonHandler.instance().getMinecraftServerInstance(), new MenuCommand());
     }
 
     public static MenusForge getInstance() {

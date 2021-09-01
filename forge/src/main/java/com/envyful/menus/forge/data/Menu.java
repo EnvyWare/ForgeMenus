@@ -92,8 +92,23 @@ public class Menu {
             itemStack.getOrCreateSubCompound("UnsafeData").setString("tooltip", tooltip);
 
             for (ConfigurationNode nbtNode : value.node("nbt").childrenMap().values()) {
-                itemStack.getOrCreateSubCompound("UnsafeData").setString(nbtNode.node("key").getString(),
-                        nbtNode.node("value").getString(""));
+                switch (nbtNode.node("type").getString("String").toLowerCase()) {
+                    case "int":
+                        itemStack.getTagCompound().setInteger(nbtNode.node("key").getString(""), nbtNode.node("value").getInt(0));
+                        break;
+                    case "short":
+                        itemStack.getTagCompound().setShort(nbtNode.node("key").getString(""), (short) nbtNode.node("value").getInt(0));
+                        break;
+                    case "byte":
+                        itemStack.getTagCompound().setByte(nbtNode.node("key").getString(""), (byte) nbtNode.node("value").getInt(0));
+                        break;
+                    case "long":
+                        itemStack.getTagCompound().setLong(nbtNode.node("key").getString(""), nbtNode.node("value").getLong(0));
+                        break;
+                    default: case "string":
+                        itemStack.getTagCompound().setString(nbtNode.node("key").getString(""), nbtNode.node("value").getString(""));
+                        break;
+                }
             }
 
             List<Pair<Integer, Integer>> positions = Lists.newArrayList();
