@@ -1,5 +1,6 @@
 package com.envyful.menus.forge.ui;
 
+import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
@@ -34,7 +35,8 @@ public class GenericUI {
         this.placeElements(elements);
 
         GuiFactory.guiBuilder()
-                .title(name)
+                .title(UtilChatColour.translateColourCodes('&',
+                        UtilPlaceholder.replaceIdentifiers(this.player.getParent(), name)))
                 .addPane(this.pane)
                 .height(height)
                 .setPlayerManager(MenusForge.getInstance().getPlayerManager())
@@ -45,11 +47,12 @@ public class GenericUI {
     private void handleClose(List<String> commands) {
         if (!this.allowClose) {
             GuiFactory.guiBuilder()
-                    .title(this.name)
+                    .title(UtilChatColour.translateColourCodes('&',
+                            UtilPlaceholder.replaceIdentifiers(this.player.getParent(), name)))
                     .addPane(this.pane)
-                    .height(this.height)
+                    .height(height)
                     .setPlayerManager(MenusForge.getInstance().getPlayerManager())
-                    .setCloseConsumer(envyPlayer -> this.handleClose(commands))
+                    .setCloseConsumer(envyPlayer -> this.handleClose(closeCommands))
                     .build().open(player);
             return;
         }
