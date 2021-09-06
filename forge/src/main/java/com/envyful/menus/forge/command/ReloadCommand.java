@@ -6,9 +6,12 @@ import com.envyful.api.command.annotate.Permissible;
 import com.envyful.api.command.annotate.executor.CommandProcessor;
 import com.envyful.api.command.annotate.executor.Sender;
 import com.envyful.menus.forge.MenusForge;
+import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.data.Menu;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.util.text.TextComponentString;
+
+import java.io.File;
 
 @Command(
         value = "reload",
@@ -22,6 +25,14 @@ public class ReloadCommand {
     public void run(@Sender ICommandSender sender, String[] args) {
         if (args.length != 1) {
             sender.sendMessage(new TextComponentString("Reloads a menu - /menus reload <name>"));
+            return;
+        }
+
+        if (args[0].equalsIgnoreCase("all")) {
+            sender.sendMessage(new TextComponentString("Reloading all menus...."));
+            MenusForge.getInstance().unloadAll();
+            MenusForge.getInstance().handleDirectory(new File(MenuConfig.PATH));
+            sender.sendMessage(new TextComponentString("Reloaded (and loaded) all menus...."));
             return;
         }
 

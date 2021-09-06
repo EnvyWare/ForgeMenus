@@ -105,4 +105,8 @@ public class MenusForge {
     public Menu getMenu(String id) {
         return this.loadedMenus.get(id);
     }
+
+    public void unloadAll() {
+        this.loadedMenus.clear();
+    }
 }
