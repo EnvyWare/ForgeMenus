@@ -3,11 +3,11 @@ package com.envyful.menus.forge.ui;
 import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
-import com.envyful.api.gui.item.Displayable;
 import com.envyful.api.gui.pane.Pane;
 import com.envyful.api.player.EnvyPlayer;
 import com.envyful.api.type.Pair;
 import com.envyful.menus.forge.MenusForge;
+import com.envyful.menus.forge.data.ConfigItem;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import net.minecraft.entity.player.EntityPlayerMP;
 
@@ -23,7 +23,7 @@ public class GenericUI {
     private boolean allowClose;
 
     public GenericUI(EnvyPlayer<EntityPlayerMP> player, String name, int height, boolean allowClose,
-                     Map<Pair<Integer, Integer>, Displayable> elements,
+                     Map<Pair<Integer, Integer>, ConfigItem> elements,
                      List<String> closeCommands) {
         this.player = player;
         this.allowClose = allowClose;
@@ -71,9 +71,10 @@ public class GenericUI {
         });
     }
 
-    private void placeElements(Map<Pair<Integer, Integer>, Displayable> elements) {
-        for (Map.Entry<Pair<Integer, Integer>, Displayable> integerElementEntry : elements.entrySet()) {
-            this.pane.set(integerElementEntry.getKey().getX(), integerElementEntry.getKey().getY(), integerElementEntry.getValue());
+    private void placeElements(Map<Pair<Integer, Integer>, ConfigItem> elements) {
+        for (Map.Entry<Pair<Integer, Integer>, ConfigItem> integerElementEntry : elements.entrySet()) {
+            this.pane.set(integerElementEntry.getKey().getX(), integerElementEntry.getKey().getY(),
+                    integerElementEntry.getValue().build(this.player.getParent(), this));
         }
     }
 
