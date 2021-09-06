@@ -46,14 +46,16 @@ public class GenericUI {
 
     private void handleClose(List<String> commands) {
         if (!this.allowClose) {
-            GuiFactory.guiBuilder()
-                    .title(UtilChatColour.translateColourCodes('&',
-                            UtilPlaceholder.replaceIdentifiers(this.player.getParent(), name)))
-                    .addPane(this.pane)
-                    .height(height)
-                    .setPlayerManager(MenusForge.getInstance().getPlayerManager())
-                    .setCloseConsumer(envyPlayer -> this.handleClose(commands))
-                    .build().open(player);
+            UtilForgeConcurrency.runSync(() -> {
+                GuiFactory.guiBuilder()
+                        .title(UtilChatColour.translateColourCodes('&',
+                                UtilPlaceholder.replaceIdentifiers(this.player.getParent(), name)))
+                        .addPane(this.pane)
+                        .height(height)
+                        .setPlayerManager(MenusForge.getInstance().getPlayerManager())
+                        .setCloseConsumer(envyPlayer -> this.handleClose(commands))
+                        .build().open(player);
+            });
             return;
         }
 
