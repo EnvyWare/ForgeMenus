@@ -52,7 +52,7 @@ public class GenericUI {
                     .addPane(this.pane)
                     .height(height)
                     .setPlayerManager(MenusForge.getInstance().getPlayerManager())
-                    .setCloseConsumer(envyPlayer -> this.handleClose(closeCommands))
+                    .setCloseConsumer(envyPlayer -> this.handleClose(commands))
                     .build().open(player);
             return;
         }

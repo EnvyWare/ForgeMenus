@@ -63,14 +63,20 @@ public class Menu {
             int positionY = value.node("positionY").getInt(1);
             Pair<Integer, Integer> position = Pair.of(positionX, positionY);
 
-            List<Pair<Integer, Integer>> positions = Lists.newArrayList();
+            List<Integer> slots1 = UtilConfig.getList(value, Integer.class, "slots");
 
-            for (int slots : UtilConfig.getList(value, Integer.class, "slots")) {
-                positions.add(Pair.of(slots % 9, slots / 9));
-            }
+            if (slots1.isEmpty()) {
+                this.items.put(position, new ConfigItem(value));
+            } else {
+                List<Pair<Integer, Integer>> positions = Lists.newArrayList();
 
-            for (Pair<Integer, Integer> pos : positions) {
-                this.items.put(pos, new ConfigItem(value));
+                for (int slots : slots1) {
+                    positions.add(Pair.of(slots % 9, slots / 9));
+                }
+
+                for (Pair<Integer, Integer> pos : positions) {
+                    this.items.put(pos, new ConfigItem(value));
+                }
             }
         }
     }
