@@ -30,6 +30,7 @@ public class Menu {
     private String identifier;
     private String name;
     private int height;
+    private boolean allowNaturalClose;
     private String permission;
     private List<String> closeCommands;
     private List<String> openCommands;
@@ -57,6 +58,7 @@ public class Menu {
         this.identifier = this.config.getNode().node("inventory", "identifier").getString();
         this.name = this.config.getNode().node("inventory", "name").getString();
         this.height = this.config.getNode().node("inventory", "height").getInt();
+        this.allowNaturalClose = this.config.getNode().node("inventory", "allow-natural-close").getBoolean(true);
         this.permission = this.config.getNode().node("inventory", "permission").getString("menu." + this.identifier);
         this.closeCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "close-commands");
         this.openCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "open-commands");
@@ -153,7 +155,7 @@ public class Menu {
     }
 
     public void open(EnvyPlayer<EntityPlayerMP> player) {
-        new GenericUI(player, this.name, this.height, this.items, this.closeCommands);
+        new GenericUI(player, this.name, this.height, this.allowNaturalClose, this.items, this.closeCommands);
 
         UtilForgeConcurrency.runSync(() -> {
             for (String command : this.openCommands) {

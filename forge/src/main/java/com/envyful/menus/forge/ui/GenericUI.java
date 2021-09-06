@@ -18,10 +18,17 @@ public class GenericUI {
 
     private EnvyPlayer<EntityPlayerMP> player;
     private Pane pane;
+    private String name;
+    private int height;
+    private boolean allowClose;
 
-    public GenericUI(EnvyPlayer<EntityPlayerMP> player, String name, int height, Map<Pair<Integer, Integer>, Displayable> elements,
+    public GenericUI(EnvyPlayer<EntityPlayerMP> player, String name, int height, boolean allowClose,
+                     Map<Pair<Integer, Integer>, Displayable> elements,
                      List<String> closeCommands) {
         this.player = player;
+        this.allowClose = allowClose;
+        this.name = name;
+        this.height = height;
         this.pane = GuiFactory.paneBuilder().topLeftX(0).topLeftY(0).width(9).height(height).build();
 
         this.placeElements(elements);
@@ -36,6 +43,17 @@ public class GenericUI {
     }
 
     private void handleClose(List<String> commands) {
+        if (!this.allowClose) {
+            GuiFactory.guiBuilder()
+                    .title(this.name)
+                    .addPane(this.pane)
+                    .height(this.height)
+                    .setPlayerManager(MenusForge.getInstance().getPlayerManager())
+                    .setCloseConsumer(envyPlayer -> this.handleClose(commands))
+                    .build().open(player);
+            return;
+        }
+
         UtilForgeConcurrency.runSync(() -> {
             for (String command : commands) {
                 command = UtilPlaceholder.replaceIdentifiers(this.player.getParent(), command);
@@ -57,5 +75,9 @@ public class GenericUI {
         for (Map.Entry<Pair<Integer, Integer>, Displayable> integerElementEntry : elements.entrySet()) {
             this.pane.set(integerElementEntry.getKey().getX(), integerElementEntry.getKey().getY(), integerElementEntry.getValue());
         }
+    }
+
+    public void setAllowClose(boolean allowClose) {
+        this.allowClose = allowClose;
     }
 }
