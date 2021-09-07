@@ -2,6 +2,7 @@ package com.envyful.menus.forge.data;
 
 import com.envyful.api.config.util.UtilConfig;
 import com.envyful.api.forge.chat.UtilChatColour;
+import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.items.ItemBuilder;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
@@ -97,10 +98,19 @@ public class ConfigItem {
 
     private void handleClick(EnvyPlayer<EntityPlayerMP> player, GenericUI ui, Displayable.ClickType clickType,
                              List<String> commands) {
+        List<String> remainingCommands = Lists.newArrayList();
+        boolean closed = false;
+
         for (String command : commands) {
             if (command.equalsIgnoreCase("%close%")) {
                 ui.setAllowClose(true);
                 player.getParent().closeScreen();
+                closed = true;
+                continue;
+            }
+
+            if (closed) {
+                remainingCommands.add(command);
                 continue;
             }
 
@@ -119,6 +129,28 @@ public class ConfigItem {
 
                 player.executeCommand(command);
             }
+        }
+
+        if (closed) {
+            UtilForgeConcurrency.runSync(() -> {
+                for (String command : remainingCommands) {
+                    if (command.isEmpty() || !(command.contains("player:") || command.contains("console:"))) {
+                        continue;
+                    }
+
+                    command = UtilPlaceholder.replaceIdentifiers(player.getParent(), command);
+
+                    if (command.startsWith("console:")) {
+                        command = command.split("console:")[1];
+
+                        UtilForgeServer.executeCommand(command);
+                    } else {
+                        command = command.split("player:")[1];
+
+                        player.executeCommand(command);
+                    }
+                }
+            });
         }
     }
 }
