@@ -4,6 +4,7 @@ import com.envyful.api.config.util.UtilConfig;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.items.ItemBuilder;
+import com.envyful.api.forge.player.util.UtilPlayer;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.gui.item.Displayable;
@@ -28,6 +29,8 @@ public class ConfigItem {
     private final String tooltip;
     private final List<String> lore;
     private final List<String> commands;
+    private final String requiredPermission;
+    private final ConfigItem elseItem;
     private final ConfigurationNode node;
 
     public ConfigItem(ConfigurationNode value) {
@@ -38,10 +41,22 @@ public class ConfigItem {
         this.tooltip = value.node("tooltip").getString("");
         this.lore = UtilConfig.getList(value, String.class, "lore");
         this.commands = UtilConfig.getList(value, String.class, "commands");
+        this.requiredPermission = value.node("requirement").getString("");
+
+        if (!this.requiredPermission.isEmpty()) {
+            this.elseItem = new ConfigItem(value.node("else"));
+        } else {
+            this.elseItem = null;
+        }
+
         this.node = value;
     }
 
     public Displayable build(EntityPlayerMP player, GenericUI ui) {
+        if (!this.requiredPermission.isEmpty() && !UtilPlayer.hasPermission(player, this.requiredPermission)) {
+            return this.elseItem.build(player, ui);
+        }
+
         ItemStack itemStack = new ItemBuilder()
                 .type(itemType == null ? Items.SKULL : itemType)
                 .amount(amount)
