@@ -8,8 +8,10 @@ import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.menus.forge.command.MenuCommand;
 import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.data.Menu;
+import com.envyful.menus.forge.data.MenuTabCompleter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
@@ -40,6 +42,19 @@ public class MenusForge {
         instance = this;
 
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
+
+        this.commandFactory.registerCompleter(new MenuTabCompleter());
+
+        this.commandFactory.registerInjector(Menu.class, (sender, args) -> {
+            Menu menu = this.getMenu(args[0]);
+
+            if(menu == null) {
+                sender.sendMessage(new TextComponentString("Menu doesn't exist!"));
+                return null;
+            }
+
+            return menu;
+        });
 
         UtilConcurrency.runAsync(() -> {
             File file = new File(MenuConfig.PATH);
