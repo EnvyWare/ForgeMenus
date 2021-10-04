@@ -69,6 +69,8 @@ public class ConfigItem {
             if (this.node.node("type").getString().contains("basehead")) {
                 String base64 = this.node.node("type").getString().split("-")[1];
                 itemStack.getOrCreateSubCompound("SkullOwner").setString("textures", base64);
+            } else if (this.node.node("type").getString().equals("playerhead")) {
+                itemStack.getTagCompound().setString("SkullOwner", player.getName());
             }
         }
 
