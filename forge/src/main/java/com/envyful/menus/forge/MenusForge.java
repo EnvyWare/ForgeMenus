@@ -28,7 +28,7 @@ import java.util.Map;
 )
 public class MenusForge {
 
-    protected static final String VERSION = "0.3.0";
+    protected static final String VERSION = "1.4.0";
 
     private static MenusForge instance;
 
