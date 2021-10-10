@@ -4,6 +4,7 @@ import com.envyful.api.config.util.UtilConfig;
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.items.ItemBuilder;
+import com.envyful.api.forge.items.ItemFlag;
 import com.envyful.api.forge.player.util.UtilPlayer;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
@@ -12,6 +13,7 @@ import com.envyful.api.player.EnvyPlayer;
 import com.envyful.menus.forge.ui.GenericUI;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import com.google.common.collect.Lists;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -57,13 +59,23 @@ public class ConfigItem {
             return this.elseItem.build(player, ui);
         }
 
-        ItemStack itemStack = new ItemBuilder()
+        ItemBuilder builder = new ItemBuilder()
                 .type(itemType == null ? Items.SKULL : itemType)
                 .amount(amount)
                 .name(UtilChatColour.translateColourCodes('&', UtilPlaceholder.replaceIdentifiers(player, this.name)))
                 .lore(this.getLore(player))
-                .damage(damage)
-                .build();
+                .damage(damage);
+
+        for (ConfigurationNode enchants : this.node.node("enchants").childrenMap().values()) {
+            builder.enchant(Enchantment.getEnchantmentByID(enchants.node("id").getInt()),
+                            enchants.node("level").getInt());
+        }
+
+        for (String flags : UtilConfig.getList(node, String.class, "flags")) {
+            builder.itemFlag(ItemFlag.valueOf(flags));
+        }
+
+        ItemStack itemStack = builder.build();
 
         if (itemType == null) {
             if (this.node.node("type").getString().contains("basehead")) {
