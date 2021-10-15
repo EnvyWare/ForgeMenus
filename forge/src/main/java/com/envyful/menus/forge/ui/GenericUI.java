@@ -64,11 +64,22 @@ public class GenericUI {
                 command = UtilPlaceholder.replaceIdentifiers(this.player.getParent(), command);
 
                 if (command.startsWith("console:")) {
-                    command = command.split("console:")[1];
+                    String[] split = command.split("console:");
+
+                    if (split.length < 2) {
+                        continue;
+                    }
+
+                    command = split[1];
 
                     UtilForgeServer.executeCommand(command);
                 } else {
-                    command = command.split("player:")[1];
+                    String[] split = command.split("player:");
+
+                    if (split.length < 2) {
+                        continue;
+                    }
+                    command = split[1];
 
                     this.player.executeCommand(command);
                 }

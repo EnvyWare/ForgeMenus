@@ -10,6 +10,7 @@ import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.gui.item.Displayable;
 import com.envyful.api.player.EnvyPlayer;
+import com.envyful.menus.forge.MenusForge;
 import com.envyful.menus.forge.ui.GenericUI;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import com.google.common.collect.Lists;
@@ -131,6 +132,22 @@ public class ConfigItem {
         boolean closed = false;
 
         for (String command : commands) {
+            if (command.startsWith("menu:")) {
+                String menu = command.replace("menu: ", "");
+                Menu nextMenu = MenusForge.getInstance().getMenu(menu);
+
+                if (nextMenu == null) {
+                    System.out.println("ERROR: cannot find menu `" + menu + "`");
+                    continue;
+                }
+
+                ui.setAllowClose(true);
+                player.getParent().closeScreen();
+                closed = true;
+                remainingCommands.add("player:menus open " + menu);
+                continue;
+            }
+
             if (command.equalsIgnoreCase("%close%")) {
                 ui.setAllowClose(true);
                 player.getParent().closeScreen();
