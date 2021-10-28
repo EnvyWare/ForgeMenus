@@ -22,6 +22,7 @@ public class GenericUI {
     private String name;
     private int height;
     private boolean allowClose;
+    private boolean clicked = false;
 
     public GenericUI(EnvyPlayer<EntityPlayerMP> player, String name, int height, boolean allowClose,
                      Map<Pair<Integer, Integer>, ConfigItem> elements,
@@ -96,5 +97,13 @@ public class GenericUI {
 
     public void setAllowClose(boolean allowClose) {
         this.allowClose = allowClose;
+    }
+
+    public void setClicked(boolean clicked) {
+        this.clicked = clicked;
+    }
+
+    public boolean isClicked() {
+        return this.clicked;
     }
 }
