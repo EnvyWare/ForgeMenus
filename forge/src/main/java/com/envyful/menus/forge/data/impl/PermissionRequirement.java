@@ -15,6 +15,10 @@ public class PermissionRequirement implements ItemRequirement {
         this.requiredPermission = node.node("permission").getString();
     }
 
+    public PermissionRequirement(String permission) {
+        this.requiredPermission = permission;
+    }
+
     @Override
     public boolean fits(EntityPlayerMP player) {
         return UtilPlayer.hasPermission(player, this.requiredPermission);
