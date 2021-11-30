@@ -21,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.configurate.ConfigurationNode;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ConfigItem {
@@ -33,6 +34,7 @@ public class ConfigItem {
     private final List<String> lore;
     private final List<String> commands;
     private final String requiredPermission;
+    private final List<String> requirements;
     private final ConfigItem elseItem;
     private final ConfigurationNode node;
 
@@ -46,7 +48,13 @@ public class ConfigItem {
         this.commands = UtilConfig.getList(value, String.class, "commands");
         this.requiredPermission = value.node("requirement").getString("");
 
-        if (!this.requiredPermission.isEmpty()) {
+        if (value.hasChild("requirements")) {
+            this.requirements = UtilConfig.getList(value, String.class, "requirements");
+        } else {
+            this.requirements = Collections.emptyList();
+        }
+
+        if (!this.requiredPermission.isEmpty() || !this.requirements.isEmpty()) {
             this.elseItem = new ConfigItem(value.node("else"));
         } else {
             this.elseItem = null;
