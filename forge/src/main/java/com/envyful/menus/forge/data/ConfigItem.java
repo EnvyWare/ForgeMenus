@@ -5,12 +5,12 @@ import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.items.ItemBuilder;
 import com.envyful.api.forge.items.ItemFlag;
-import com.envyful.api.forge.player.util.UtilPlayer;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.gui.item.Displayable;
 import com.envyful.api.player.EnvyPlayer;
 import com.envyful.menus.forge.MenusForge;
+import com.envyful.menus.forge.data.impl.PermissionRequirement;
 import com.envyful.menus.forge.ui.GenericUI;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import com.google.common.collect.Lists;
@@ -21,7 +21,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.configurate.ConfigurationNode;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ConfigItem {
@@ -33,8 +32,7 @@ public class ConfigItem {
     private final String tooltip;
     private final List<String> lore;
     private final List<String> commands;
-    private final String requiredPermission;
-    private final List<String> requirements;
+    private final List<ItemRequirement> requirements;
     private final ConfigItem elseItem;
     private final ConfigurationNode node;
 
@@ -46,15 +44,23 @@ public class ConfigItem {
         this.tooltip = value.node("tooltip").getString("");
         this.lore = UtilConfig.getList(value, String.class, "lore");
         this.commands = UtilConfig.getList(value, String.class, "commands");
-        this.requiredPermission = value.node("requirement").getString("");
+        this.requirements = Lists.newArrayList();
 
-        if (value.hasChild("requirements")) {
-            this.requirements = UtilConfig.getList(value, String.class, "requirements");
-        } else {
-            this.requirements = Collections.emptyList();
+        if (value.hasChild("requirement")) {
+            this.requirements.add(new PermissionRequirement(value));
         }
 
-        if (!this.requiredPermission.isEmpty() || !this.requirements.isEmpty()) {
+        if (value.hasChild("requirements")) {
+            for (ConfigurationNode configurationNode : value.node("requirements").childrenMap().values()) {
+                ItemRequirement from = RequirementFactory.from(configurationNode);
+
+                if (from != null) {
+                    this.requirements.add(from);
+                }
+            }
+        }
+
+        if (!this.requirements.isEmpty()) {
             this.elseItem = new ConfigItem(value.node("else"));
         } else {
             this.elseItem = null;
@@ -64,7 +70,7 @@ public class ConfigItem {
     }
 
     public Displayable build(EntityPlayerMP player, GenericUI ui) {
-        if (!this.requiredPermission.isEmpty() && !UtilPlayer.hasPermission(player, this.requiredPermission)) {
+        if (!this.requirements.isEmpty() && !this.canSee(player)) {
             return this.elseItem.build(player, ui);
         }
 
@@ -121,6 +127,16 @@ public class ConfigItem {
         return GuiFactory.displayableBuilder(ItemStack.class).itemStack(itemStack)
                 .clickHandler((envyPlayer, clickType) ->
                         this.handleClick((EnvyPlayer<EntityPlayerMP>) envyPlayer, ui, clickType, commands)).build();
+    }
+
+    private boolean canSee(EntityPlayerMP player) {
+        for (ItemRequirement requirement : this.requirements) {
+            if (!requirement.fits(player)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private List<String> getLore(EntityPlayerMP player) {
