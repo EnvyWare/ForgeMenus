@@ -13,7 +13,7 @@ subprojects {
     apply plugin: 'java'
 
     group = 'com.envyful.menus'
-    version = '1.8.0'
+    version = '1.8.1'
 
     sourceCompatibility = 1.8
     targetCompatibility = 1.8
