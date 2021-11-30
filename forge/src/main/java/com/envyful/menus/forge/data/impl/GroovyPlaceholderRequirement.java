@@ -5,6 +5,7 @@ import com.envyful.menus.forge.data.ItemRequirement;
 import com.envyful.menus.forge.data.data.Requirement;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import net.minecraft.entity.player.EntityPlayerMP;
+import org.spongepowered.configurate.ConfigurationNode;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
@@ -14,11 +15,9 @@ public class GroovyPlaceholderRequirement implements ItemRequirement {
 
     private final String code;
 
-    public static GroovyPlaceholderRequirement of(String code) {
-        return new GroovyPlaceholderRequirement(code);
+    public GroovyPlaceholderRequirement(ConfigurationNode node) {
+        this.code = node.node("code").getString();
     }
-
-    private GroovyPlaceholderRequirement(String code) {this.code = code;}
 
     @Override
     public boolean fits(EntityPlayerMP player) {
