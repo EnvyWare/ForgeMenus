@@ -11,8 +11,8 @@ import javax.script.ScriptEngineManager;
 @ConfigPath("config/Menus/config.yml")
 public class MenusConfig extends AbstractYamlConfig {
 
-    private String scriptingEngine = "groovy";
-    private ScriptEngine engine = null;
+    private String scriptingEngine = "javascript";
+    private transient ScriptEngine engine = null;
 
     public MenusConfig() {
     }
@@ -20,7 +20,7 @@ public class MenusConfig extends AbstractYamlConfig {
     public ScriptEngine getEngine() {
         if (this.engine == null) {
             ScriptEngineManager manager = new ScriptEngineManager();
-            this.engine = manager.getEngineByName("groovy");
+            this.engine = manager.getEngineByName(this.scriptingEngine);
         }
 
         return this.engine;

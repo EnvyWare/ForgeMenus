@@ -45,8 +45,8 @@ dependencies {
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
     shadow group: 'com.github.Pixelmon-Development.API', name: 'commons', version: '1.2.3'
     shadow group: 'com.github.Pixelmon-Development.API', name: 'forge', version: '1.2.3'
-    shadow group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.4'
 
+    annotationProcessor 'org.atteo.classindex:classindex:3.4'
 }
 
 shadowJar {
@@ -62,8 +62,6 @@ shadowJar {
     relocate('org.slf4j', 'com.envyful.menus.forge.shade.slf4j')
     relocate('com.envyful.api', 'com.envyful.menus.forge.shade.envy.api')
     relocate('org.bstats', 'com.envyful.menus.forge.shade.bstats')
-    relocate('groovy', 'com.envyful.menus.forge.shade.groovy')
-    relocate('org.codehaus', 'com.envyful.menus.forge.shade.groovy')
 
 
     exclude "**/module-info.class"

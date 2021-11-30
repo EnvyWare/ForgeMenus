@@ -11,6 +11,7 @@ import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.config.MenusConfig;
 import com.envyful.menus.forge.data.Menu;
 import com.envyful.menus.forge.data.MenuTabCompleter;
+import com.envyful.menus.forge.data.RequirementFactory;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.util.text.TextComponentString;
@@ -47,6 +48,7 @@ public class MenusForge {
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartedEvent event) {
         this.reloadConfig();
+        RequirementFactory.init();
 
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
 
