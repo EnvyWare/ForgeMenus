@@ -41,8 +41,8 @@ dependencies {
     compileOnly 'com.github.Pixelmon-Development.ForgePlaceholderAPI:api:0.0.1'
     compileOnly 'com.github.Pixelmon-Development.ForgePlaceholderAPI:api:0.0.1'
 
+    shadow 'org.atteo.classindex:classindex:3.4'
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
-
     shadow group: 'com.github.Pixelmon-Development.API', name: 'commons', version: '1.2.3'
     shadow group: 'com.github.Pixelmon-Development.API', name: 'forge', version: '1.2.3'
     shadow group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.4.4'
@@ -53,6 +53,7 @@ shadowJar {
     configurations = [project.configurations.shadow]
     archiveName = rootProject.name + '-Forge.jar'
 
+    relocate('org.atteo.', 'com.envyful.menus.forge.shade.classindex')
     relocate('org.spongepowered.configurate', 'com.envyful.menus.forge.shade.configurate')
     relocate('org.yaml.snakeyaml', 'com.envyful.menus.forge.shade.snakeyaml')
     relocate('io.leangen.geantyref', 'com.envyful.menus.forge.shade.geantyref')
