@@ -18,7 +18,7 @@ public class ItemInSlotRequirement implements ItemRequirement {
     private final ItemStack itemStack;
 
     public ItemInSlotRequirement(ConfigurationNode value) {
-        Item itemType = Item.getByNameOrId(value.node("type").getString("minecraft:dirt"));
+        Item itemType = Item.getByNameOrId(value.node("item_type").getString("minecraft:dirt"));
         int amount = value.node("amount").getInt(1);
         String name = value.node("name").getString();
         int damage = value.node("damage").getInt(0);
