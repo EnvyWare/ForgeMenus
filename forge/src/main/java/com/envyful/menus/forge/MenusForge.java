@@ -1,12 +1,14 @@
 package com.envyful.menus.forge;
 
 import com.envyful.api.concurrency.UtilConcurrency;
+import com.envyful.api.config.yaml.YamlConfigFactory;
 import com.envyful.api.forge.command.ForgeCommandFactory;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
 import com.envyful.api.forge.player.ForgePlayerManager;
 import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.menus.forge.command.MenuCommand;
 import com.envyful.menus.forge.config.MenuConfig;
+import com.envyful.menus.forge.config.MenusConfig;
 import com.envyful.menus.forge.data.Menu;
 import com.envyful.menus.forge.data.MenuTabCompleter;
 import com.google.common.collect.Lists;
@@ -17,19 +19,22 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 @Mod(
-        modid = "menus",
+        modid = MenusForge.MOD_ID,
         name = "Menus Forge",
         version = MenusForge.VERSION,
         acceptableRemoteVersions = "*"
 )
 public class MenusForge {
 
+    protected static final String MOD_ID = "menus";
     protected static final String VERSION = "1.7.0";
 
+    @Mod.Instance(MOD_ID)
     private static MenusForge instance;
 
     private ForgePlayerManager playerManager = new ForgePlayerManager();
@@ -37,9 +42,11 @@ public class MenusForge {
 
     private Map<String, Menu> loadedMenus = Maps.newHashMap();
 
+    private MenusConfig config;
+
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartedEvent event) {
-        instance = this;
+        this.reloadConfig();
 
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
 
@@ -71,6 +78,14 @@ public class MenusForge {
         });
 
         this.commandFactory.registerCommand(FMLCommonHandler.instance().getMinecraftServerInstance(), new MenuCommand());
+    }
+
+    public void reloadConfig() {
+        try {
+            this.config = YamlConfigFactory.getInstance(MenusConfig.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static MenusForge getInstance() {
@@ -123,5 +138,9 @@ public class MenusForge {
 
     public void unloadAll() {
         this.loadedMenus.clear();
+    }
+
+    public MenusConfig getConfig() {
+        return this.config;
     }
 }
