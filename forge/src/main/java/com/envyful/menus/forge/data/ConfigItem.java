@@ -47,7 +47,7 @@ public class ConfigItem {
         this.requirements = Lists.newArrayList();
 
         if (value.hasChild("requirement")) {
-            this.requirements.add(new PermissionRequirement(value));
+            this.requirements.add(new PermissionRequirement(value.node("requirement").getString()));
         }
 
         if (value.hasChild("requirements")) {
