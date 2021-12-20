@@ -63,6 +63,7 @@ shadowJar {
     relocate('org.slf4j', 'com.envyful.menus.forge.shade.slf4j')
     relocate('com.envyful.api', 'com.envyful.menus.forge.shade.envy.api')
     relocate('org.bstats', 'com.envyful.menus.forge.shade.bstats')
+    relocate('com.typesafe', 'com.envyful.menus.forge.shade.typesafe')
 
 
     exclude "**/module-info.class"
