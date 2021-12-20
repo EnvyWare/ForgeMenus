@@ -5,12 +5,16 @@ import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.player.EnvyPlayer;
 import com.envyful.api.type.Pair;
+import com.envyful.menus.forge.command.MenuAliasCommand;
 import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.ui.GenericUI;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import net.minecraft.command.CommandHandler;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.List;
@@ -34,6 +38,7 @@ public class Menu {
         this.fileIdentifier = fileIdentifier;
         this.reloadConfig();
         this.loadItems();
+        this.registerCommand();
     }
 
     public String getIdentifier() {
@@ -79,6 +84,11 @@ public class Menu {
                 }
             }
         }
+    }
+
+    private void registerCommand() {
+        MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
+        ((CommandHandler) server.getCommandManager()).registerCommand(new MenuAliasCommand(this));
     }
 
     public void open(EnvyPlayer<EntityPlayerMP> player) {
