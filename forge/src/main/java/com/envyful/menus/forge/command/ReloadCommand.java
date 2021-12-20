@@ -23,12 +23,7 @@ public class ReloadCommand {
 
     @CommandProcessor
     public void run(@Sender ICommandSender sender, String[] args) {
-        if (args.length != 1) {
-            sender.sendMessage(new TextComponentString("Reloads a menu - /menus reload <name>"));
-            return;
-        }
-
-        if (args[0].equalsIgnoreCase("all")) {
+        if (args.length != 1 || args[0].equalsIgnoreCase("all")) {
             sender.sendMessage(new TextComponentString("Reloading all menus...."));
             MenusForge.getInstance().unloadAll();
             MenusForge.getInstance().handleDirectory(new File(MenuConfig.PATH));
