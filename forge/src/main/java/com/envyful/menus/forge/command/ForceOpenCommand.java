@@ -29,6 +29,9 @@ public class ForceOpenCommand {
     public void run(@Sender EntityPlayerMP sender, @Completable(MenuTabCompleter.class) @Argument Menu menu,
                     @Completable(PlayerTabCompleter.class) @ExcludeSelfCompletion @Argument EntityPlayerMP target) {
         menu.open(MenusForge.getInstance().getPlayerManager().getPlayer(target));
-        sender.sendMessage(new TextComponentString(UtilChatColour.translateColourCodes('&', "")));
+        sender.sendMessage(new TextComponentString(UtilChatColour.translateColourCodes('&',
+                MenusForge.getInstance().getLocale().getForceOpened()
+                        .replace("%target%", target.getName())
+                        .replace("%menu%", menu.getIdentifier()))));
     }
 }
