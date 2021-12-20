@@ -9,6 +9,7 @@ import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.menus.forge.command.MenuCommand;
 import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.config.MenusConfig;
+import com.envyful.menus.forge.config.MenusLocale;
 import com.envyful.menus.forge.data.Menu;
 import com.envyful.menus.forge.data.MenuTabCompleter;
 import com.envyful.menus.forge.data.RequirementFactory;
@@ -44,6 +45,7 @@ public class MenusForge {
     private Map<String, Menu> loadedMenus = Maps.newHashMap();
 
     private MenusConfig config;
+    private MenusLocale locale;
 
     @Mod.EventHandler
     public void onServerStarting(FMLServerStartedEvent event) {
@@ -85,6 +87,7 @@ public class MenusForge {
     public void reloadConfig() {
         try {
             this.config = YamlConfigFactory.getInstance(MenusConfig.class);
+            this.locale = YamlConfigFactory.getInstance(MenusLocale.class);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -144,5 +147,9 @@ public class MenusForge {
 
     public MenusConfig getConfig() {
         return this.config;
+    }
+
+    public MenusLocale getLocale() {
+        return this.locale;
     }
 }
