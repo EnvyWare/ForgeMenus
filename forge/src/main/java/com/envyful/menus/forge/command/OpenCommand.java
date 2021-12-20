@@ -8,12 +8,12 @@ import com.envyful.api.command.annotate.executor.CommandProcessor;
 import com.envyful.api.command.annotate.executor.Completable;
 import com.envyful.api.command.annotate.executor.Sender;
 import com.envyful.api.forge.chat.UtilChatColour;
+import com.envyful.api.forge.player.util.UtilPlayer;
 import com.envyful.menus.forge.MenusForge;
 import com.envyful.menus.forge.data.Menu;
 import com.envyful.menus.forge.data.MenuTabCompleter;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.server.permission.PermissionAPI;
 
 @Command(
         value = "open",
@@ -25,8 +25,7 @@ public class OpenCommand {
 
     @CommandProcessor
     public void run(@Sender EntityPlayerMP sender, @Completable(MenuTabCompleter.class) @Argument Menu menu) {
-        if (!PermissionAPI.hasPermission(sender, menu.getPermission())
-                && !sender.canUseCommand(4, menu.getPermission())) {
+        if (!UtilPlayer.hasPermission(sender, menu.getPermission())) {
             sender.sendMessage(new TextComponentString(UtilChatColour.translateColourCodes('&',
                     "&c&l(!) &cYou don't have permission for this menu")));
             return;
