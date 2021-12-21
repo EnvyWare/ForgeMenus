@@ -3,6 +3,7 @@ package com.envyful.menus.forge;
 import com.envyful.api.concurrency.UtilConcurrency;
 import com.envyful.api.config.yaml.YamlConfigFactory;
 import com.envyful.api.forge.command.ForgeCommandFactory;
+import com.envyful.api.forge.concurrency.ForgeTaskBuilder;
 import com.envyful.api.forge.gui.factory.ForgeGuiFactory;
 import com.envyful.api.forge.player.ForgePlayerManager;
 import com.envyful.api.gui.factory.GuiFactory;
@@ -13,6 +14,7 @@ import com.envyful.menus.forge.config.MenusLocale;
 import com.envyful.menus.forge.data.Menu;
 import com.envyful.menus.forge.data.MenuTabCompleter;
 import com.envyful.menus.forge.data.RequirementFactory;
+import com.envyful.menus.forge.data.task.MenuUpdateTask;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import net.minecraft.util.text.TextComponentString;
@@ -82,6 +84,13 @@ public class MenusForge {
         });
 
         this.commandFactory.registerCommand(FMLCommonHandler.instance().getMinecraftServerInstance(), new MenuCommand());
+
+        new ForgeTaskBuilder()
+                .task(new MenuUpdateTask())
+                .interval(1)
+                .async(true)
+                .delay(20L)
+                .start();
     }
 
     public void reloadConfig() {

@@ -64,7 +64,7 @@ public class Menu {
         this.closeCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "close-commands");
         this.openCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "open-commands");
         this.items = Maps.newHashMap();
-        this.updateTicks = this.config.getNode().node("inventory", "update-ticks").getInt(0);
+        this.updateTicks = this.config.getNode().node("inventory", "update-ticks").getInt(-1);
 
         for (ConfigurationNode value : this.config.getNode().node("inventory", "items").childrenMap().values()) {
             int positionX = value.node("positionX").getInt(1);

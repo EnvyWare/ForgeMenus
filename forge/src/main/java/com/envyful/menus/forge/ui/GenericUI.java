@@ -62,6 +62,10 @@ public class GenericUI {
     }
 
     public boolean canReplace() {
+        if (this.updateTicks == -1) {
+            return false;
+        }
+
         return (FMLCommonHandler.instance().getMinecraftServerInstance().getTickCounter() - this.lastUpdate) >= this.updateTicks;
     }
 
