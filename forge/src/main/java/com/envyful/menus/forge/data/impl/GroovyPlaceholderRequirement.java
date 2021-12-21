@@ -5,6 +5,7 @@ import com.envyful.menus.forge.data.ItemRequirement;
 import com.envyful.menus.forge.data.data.Requirement;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import javax.script.ScriptEngine;
@@ -21,6 +22,10 @@ public class GroovyPlaceholderRequirement implements ItemRequirement {
 
     @Override
     public boolean fits(EntityPlayerMP player) {
+        if (this.code == null || this.code.isEmpty()) {
+            return true;
+        }
+
         ScriptEngine engine = MenusForge.getInstance().getConfig().getEngine();
 
         if (engine == null) {
@@ -28,7 +33,8 @@ public class GroovyPlaceholderRequirement implements ItemRequirement {
         }
 
         try {
-            return (boolean) engine.eval(UtilPlaceholder.replaceIdentifiers(player, this.code));
+            return (boolean) engine.eval(UtilPlaceholder.replaceIdentifiers(player, this.code.replace("tick",
+                    FMLCommonHandler.instance().getMinecraftServerInstance().getTickCounter() + "")));
         } catch (ScriptException e) {
             e.printStackTrace();
         }
