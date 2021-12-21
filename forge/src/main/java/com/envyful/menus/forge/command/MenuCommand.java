@@ -18,7 +18,8 @@ import net.minecraft.util.text.TextComponentString;
         LoadCommand.class,
         OpenCommand.class,
         ReloadCommand.class,
-        ForceOpenCommand.class
+        ForceOpenCommand.class,
+        ConvertCommand.class
 })
 public class MenuCommand {
 
