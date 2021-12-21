@@ -15,10 +15,10 @@ public abstract class Configurable {
 
     private static final String HEADER =
                     "##########################################\n" +
-                    "####                                  ####" +
+                    "####                                  ####\n" +
                     "####      ForgeMenus by Envyful       ####\n" +
                     "####  https://discord.gg/7vqgtrjDGw   ####\n" +
-                    "####                                  ####" +
+                    "####                                  ####\n" +
                     "##########################################\n";
 
     private final String name;

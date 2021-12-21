@@ -47,35 +47,33 @@ public class ConvertCommand {
 
         if(!file.exists()) {
             sender.sendMessage(
-                    new TextComponentString("File doesn't exist! example file: 'config/VirtualChest/example.conf' " +
-                            "(config/Menus/menus/example.yml) example directory: 'idiot/' (config/Menus/menus/idiot/)"));
+                    new TextComponentString("File doesn't exist! example file: 'config/VirtualChest/example.conf'"));
             return;
         }
 
         File target = new File(args[1]);
 
         if (target.exists()) {
-            //TODO: error message
+            sender.sendMessage(new TextComponentString("That target file already exists!"));
             return;
         }
 
         CommentedConfigurationNode loaded = this.loadNode(file);
 
         if (loaded == null) {
-            sender.sendMessage(new TextComponentString("ERROR"));
+            sender.sendMessage(new TextComponentString("Error loading the file.... Contact developer"));
             return;
         }
 
-        CommentedConfigurationNode aliases = loaded.node("aliases"); //TODO: parse this
         CommentedConfigurationNode menuData = loaded.node("virtualchest");
         MenuConfig menuConfig = new MenuConfig(args[1]);
         CommentedConfigurationNode inventory = menuConfig.getNode().node("inventory");
 
         try {
-            inventory.parent().node("data").set("1 - #AUTO GENERATED MENU CONFIG FROM VIRTUAL CHEST FILE: " + args[0] + "\n" +
-                    "#\n" +
-                    "# If there is an issue with the generation of this file please seek assistance in my Discord: \n" +
-                    "# https://discord.gg/7vqgtrjDGw\n");
+            inventory.parent().node("_comment").set("AUTO GENERATED MENU CONFIG FROM VIRTUAL CHEST FILE: " + args[0] + "\n" +
+                    "\n" +
+                    "If there is an issue with the generation of this file please seek assistance in my Discord: \n" +
+                    "https://discord.gg/7vqgtrjDGw\n");
             inventory.node("identifier").set(args[0]);
             inventory.node("close-commands").set(Lists.newArrayList());
             inventory.node("name").set(menuData.node("TextTitle").getString("No Title Given"));

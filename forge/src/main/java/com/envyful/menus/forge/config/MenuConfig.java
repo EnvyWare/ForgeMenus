@@ -17,7 +17,7 @@ public class MenuConfig extends Configurable {
 
     @Override
     public void populate() throws SerializationException {
-        this.getNode().node("data").set("null # Example config made by Envyful :)");
+        this.getNode().node("_comment").set("Example config made by Envyful :)");
         this.getNode().node("commands", "direct-access").set(true);
         this.getNode().node("commands", "aliases").set(Lists.newArrayList("examplemenu", "forgeexamplemenu"));
         this.getNode().node("inventory", "identifier").set("example_menu");
@@ -27,10 +27,10 @@ public class MenuConfig extends Configurable {
         this.getNode().node("inventory", "name").set("Example");
         this.getNode().node("inventory", "height").set(2);
         this.getNode().node("inventory", "open-commands").set(Lists.newArrayList(
-                "console:msg %player% WELL DONE!"
+                "console:msg %forge_name% WELL DONE!"
         ));
         this.getNode().node("inventory", "close-commands").set(Lists.newArrayList(
-                "console:msg %player% WELL DONE!",
+                "console:msg %forge_name% WELL DONE!",
                 "console:msg %forge_name% Test",
                 "player:help",
                 "player:pay Envyful 1"
