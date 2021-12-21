@@ -69,13 +69,12 @@ public class ConvertCommand {
         CommentedConfigurationNode aliases = loaded.node("aliases"); //TODO: parse this
         CommentedConfigurationNode menuData = loaded.node("virtualchest");
         MenuConfig menuConfig = new MenuConfig(args[1]);
-        menuConfig.getNode().comment("Test comment");
         CommentedConfigurationNode inventory = menuConfig.getNode().node("inventory");
 
-        inventory.comment("AUTO GENERATED MENU CONFIG FROM VIRTUAL CHEST FILE: " + args[0]);
-        inventory.comment(" ");
-        inventory.comment("If there is an issue with the generation of this file please seek assistance in my Discord: ");
-        inventory.comment("https://discord.gg/7vqgtrjDGw");
+        inventory.comment("AUTO GENERATED MENU CONFIG FROM VIRTUAL CHEST FILE: " + args[0] + "\n" +
+        " \n" +
+        "If there is an issue with the generation of this file please seek assistance in my Discord: \n" +
+        "https://discord.gg/7vqgtrjDGw\n");
 
         try {
             inventory.node("identifier").set(args[0]);

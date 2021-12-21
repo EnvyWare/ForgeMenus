@@ -117,7 +117,7 @@ public class Menu {
     public void open(EnvyPlayer<EntityPlayerMP> player) {
         GenericUI generic = new GenericUI(this, player, this.name, this.height, this.updateTicks,
                 this.allowNaturalClose, this.items,
-                this.closeCommands);
+                this.closeCommands, "");
         MenuUpdateTask.addOpenUI(player.getParent(), generic);
 
         UtilForgeConcurrency.runSync(() -> {

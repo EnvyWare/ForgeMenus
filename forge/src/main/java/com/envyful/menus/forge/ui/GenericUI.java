@@ -30,10 +30,11 @@ public class GenericUI {
     private boolean clicked = false;
     private int updateTicks;
     private long lastUpdate = FMLCommonHandler.instance().getMinecraftServerInstance().getTickCounter();
+    private String currentData;
 
     public GenericUI(Menu menu, EnvyPlayer<EntityPlayerMP> player, String name, int height, int updateTicks,
                      boolean allowClose, Map<Pair<Integer, Integer>, ConfigItem> elements,
-                     List<String> closeCommands) {
+                     List<String> closeCommands, String data) {
         this.menu = menu;
         this.player = player;
         this.allowClose = allowClose;
@@ -41,8 +42,9 @@ public class GenericUI {
         this.height = height;
         this.updateTicks = updateTicks;
         this.pane = GuiFactory.paneBuilder().topLeftX(0).topLeftY(0).width(9).height(height).build();
+        this.currentData = data;
 
-        this.placeElements(elements);
+        this.placeElements(elements, data);
 
         GuiFactory.guiBuilder()
                 .title(UtilChatColour.translateColourCodes('&',
@@ -59,7 +61,7 @@ public class GenericUI {
             return;
         }
 
-        this.placeElements(this.menu.getItems());
+        this.placeElements(this.menu.getItems(), this.currentData);
     }
 
     public boolean canReplace() {
@@ -115,7 +117,7 @@ public class GenericUI {
         });
     }
 
-    private void placeElements(Map<Pair<Integer, Integer>, ConfigItem> elements) {
+    private void placeElements(Map<Pair<Integer, Integer>, ConfigItem> elements, String data) {
         for (Map.Entry<Pair<Integer, Integer>, ConfigItem> integerElementEntry : elements.entrySet()) {
             this.pane.set(integerElementEntry.getKey().getX(), integerElementEntry.getKey().getY(),
                     integerElementEntry.getValue().build(this.player.getParent(), this));

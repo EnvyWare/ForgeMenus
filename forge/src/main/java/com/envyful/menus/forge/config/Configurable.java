@@ -1,6 +1,7 @@
 package com.envyful.menus.forge.config;
 
 import org.spongepowered.configurate.CommentedConfigurationNode;
+import org.spongepowered.configurate.loader.HeaderMode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
@@ -12,6 +13,14 @@ import java.nio.file.Paths;
 
 public abstract class Configurable {
 
+    private static final String HEADER =
+                    "##########################################\n" +
+                    "####                                  ####" +
+                    "####      ForgeMenus by Envyful       ####\n" +
+                    "####  https://discord.gg/7vqgtrjDGw   ####\n" +
+                    "####                                  ####" +
+                    "##########################################\n";
+
     private final String name;
     private final Path file;
 
@@ -21,7 +30,7 @@ public abstract class Configurable {
     public Configurable(String name) {
         this.name = name;
         this.file = Paths.get(name);
-        this.loader = YamlConfigurationLoader.builder().path(this.file).build();
+        this.loader = YamlConfigurationLoader.builder().path(this.file).headerMode(HeaderMode.PRESERVE).build();
 
         this.setup();
     }
@@ -69,7 +78,7 @@ public abstract class Configurable {
 
     public void load() {
         try {
-            this.node = this.loader.load();
+            this.node = this.loader.load(this.loader.defaultOptions().header(HEADER));
         } catch (IOException e) {
             throw new RuntimeException("Error loading " + this.name, e);
         }
