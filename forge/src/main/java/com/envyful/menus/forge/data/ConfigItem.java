@@ -42,7 +42,7 @@ public class ConfigItem {
     public ConfigItem(ConfigurationNode value) {
         this.itemType = Item.getByNameOrId(value.node("type").getString("minecraft:dirt"));
         this.amount = value.node("amount").getInt(1);
-        this.name = value.node("name").getString();
+        this.name = value.node("name").getString(" ");
         this.damage = value.node("damage").getInt(0);
         this.tooltip = value.node("tooltip").getString("");
         this.lore = UtilConfig.getList(value, String.class, "lore");
@@ -60,14 +60,14 @@ public class ConfigItem {
 
         if (value.hasChild("click-commands")) {
             for (ConfigurationNode commandNode : value.node("click-commands").childrenMap().values()) {
-                Displayable.ClickType clickType = Displayable.ClickType.valueOf(commandNode.node("type").getString());
+                List<String> commands = UtilConfig.getList(commandNode, String.class, "commands");
 
-                if (clickType == null) {
-                    continue;
+                for (String type : UtilConfig.getList(commandNode, String.class, "types")) {
+                    Displayable.ClickType clickType = Displayable.ClickType.valueOf(type);
+                    if (clickType != null) {
+                        this.commands.computeIfAbsent(clickType, ___ -> Lists.newArrayList()).addAll(commands);
+                    }
                 }
-
-                this.commands.computeIfAbsent(clickType, ___ -> Lists.newArrayList())
-                        .addAll(UtilConfig.getList(commandNode, String.class, "commands"));
             }
         }
 
