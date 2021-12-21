@@ -2,6 +2,7 @@ package com.envyful.menus.forge.ui;
 
 import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
+import com.envyful.api.forge.gui.ForgeGuiTracker;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.gui.factory.GuiFactory;
 import com.envyful.api.gui.pane.Pane;
@@ -119,6 +120,8 @@ public class GenericUI {
             this.pane.set(integerElementEntry.getKey().getX(), integerElementEntry.getKey().getY(),
                     integerElementEntry.getValue().build(this.player.getParent(), this));
         }
+
+        ForgeGuiTracker.enqueueUpdate(this.player);
     }
 
     public void setAllowClose(boolean allowClose) {
