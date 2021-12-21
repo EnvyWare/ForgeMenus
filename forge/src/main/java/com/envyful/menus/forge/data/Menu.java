@@ -27,6 +27,7 @@ public class Menu {
 
     private MenuConfig config;
     private String identifier;
+    private boolean directAccess;
     private List<String> commandAliases;
     private String name;
     private int height;
@@ -60,9 +61,14 @@ public class Menu {
         return this.commandAliases;
     }
 
+    public boolean isDirectAccess() {
+        return this.directAccess;
+    }
+
     public void loadItems() {
         this.identifier = this.config.getNode().node("inventory", "identifier").getString();
-        this.commandAliases = UtilConfig.getList(this.config.getNode(), String.class, "aliases");
+        this.directAccess = this.config.getNode().node("commands", "direct-access").getBoolean(true);
+        this.commandAliases = UtilConfig.getList(this.config.getNode(), String.class, "commands", "aliases");
         this.name = this.config.getNode().node("inventory", "name").getString();
         this.height = this.config.getNode().node("inventory", "height").getInt();
         this.updateTicks = this.config.getNode().node("inventory", "update-ticks").getInt(-1);
@@ -96,6 +102,10 @@ public class Menu {
     }
 
     private void registerCommand() {
+        if (!this.directAccess) {
+            return;
+        }
+
         MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
         ((CommandHandler) server.getCommandManager()).registerCommand(new MenuAliasCommand(this));
     }
