@@ -27,7 +27,6 @@ public class GenericUI {
     private String name;
     private int height;
     private boolean allowClose;
-    private boolean clicked = false;
     private int updateTicks;
     private long lastUpdate = FMLCommonHandler.instance().getMinecraftServerInstance().getTickCounter();
     private String currentData;
@@ -128,13 +127,5 @@ public class GenericUI {
 
     public void setAllowClose(boolean allowClose) {
         this.allowClose = allowClose;
-    }
-
-    public void setClicked(boolean clicked) {
-        this.clicked = clicked;
-    }
-
-    public boolean isClicked() {
-        return this.clicked;
     }
 }

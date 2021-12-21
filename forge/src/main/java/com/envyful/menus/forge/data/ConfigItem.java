@@ -178,11 +178,6 @@ public class ConfigItem {
 
     private void handleClick(EnvyPlayer<EntityPlayerMP> player, GenericUI ui, Displayable.ClickType clickType,
                              List<String> commands) {
-        if (ui.isClicked()) {
-            return;
-        }
-
-        ui.setClicked(true);
         List<String> remainingCommands = Lists.newArrayList();
         boolean closed = false;
 
