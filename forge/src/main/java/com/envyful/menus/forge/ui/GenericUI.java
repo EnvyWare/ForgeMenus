@@ -9,28 +9,36 @@ import com.envyful.api.player.EnvyPlayer;
 import com.envyful.api.type.Pair;
 import com.envyful.menus.forge.MenusForge;
 import com.envyful.menus.forge.data.ConfigItem;
+import com.envyful.menus.forge.data.Menu;
+import com.envyful.menus.forge.data.task.MenuUpdateTask;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import java.util.List;
 import java.util.Map;
 
 public class GenericUI {
 
+    private Menu menu;
     private EnvyPlayer<EntityPlayerMP> player;
     private Pane pane;
     private String name;
     private int height;
     private boolean allowClose;
     private boolean clicked = false;
+    private int updateTicks;
+    private long lastUpdate = FMLCommonHandler.instance().getMinecraftServerInstance().getTickCounter();
 
-    public GenericUI(EnvyPlayer<EntityPlayerMP> player, String name, int height, boolean allowClose,
-                     Map<Pair<Integer, Integer>, ConfigItem> elements,
+    public GenericUI(Menu menu, EnvyPlayer<EntityPlayerMP> player, String name, int height, int updateTicks,
+                     boolean allowClose, Map<Pair<Integer, Integer>, ConfigItem> elements,
                      List<String> closeCommands) {
+        this.menu = menu;
         this.player = player;
         this.allowClose = allowClose;
         this.name = name;
         this.height = height;
+        this.updateTicks = updateTicks;
         this.pane = GuiFactory.paneBuilder().topLeftX(0).topLeftY(0).width(9).height(height).build();
 
         this.placeElements(elements);
@@ -43,6 +51,18 @@ public class GenericUI {
                 .setPlayerManager(MenusForge.getInstance().getPlayerManager())
                 .setCloseConsumer(envyPlayer -> this.handleClose(closeCommands))
                 .build().open(player);
+    }
+
+    public void replaceItems() {
+        if (!this.canReplace()) {
+            return;
+        }
+
+        this.placeElements(this.menu.getItems());
+    }
+
+    public boolean canReplace() {
+        return (FMLCommonHandler.instance().getMinecraftServerInstance().getTickCounter() - this.lastUpdate) >= this.updateTicks;
     }
 
     private void handleClose(List<String> commands) {
@@ -59,6 +79,8 @@ public class GenericUI {
             });
             return;
         }
+
+        MenuUpdateTask.removeOpenUI(player.getParent());
 
         UtilForgeConcurrency.runSync(() -> {
             for (String command : commands) {

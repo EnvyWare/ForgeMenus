@@ -7,6 +7,7 @@ import com.envyful.api.player.EnvyPlayer;
 import com.envyful.api.type.Pair;
 import com.envyful.menus.forge.command.MenuAliasCommand;
 import com.envyful.menus.forge.config.MenuConfig;
+import com.envyful.menus.forge.data.task.MenuUpdateTask;
 import com.envyful.menus.forge.ui.GenericUI;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import com.google.common.collect.Lists;
@@ -33,6 +34,7 @@ public class Menu {
     private List<String> closeCommands;
     private List<String> openCommands;
     private Map<Pair<Integer, Integer>, ConfigItem> items;
+    private int updateTicks;
 
     public Menu(String fileIdentifier) {
         this.fileIdentifier = fileIdentifier;
@@ -62,6 +64,7 @@ public class Menu {
         this.closeCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "close-commands");
         this.openCommands = UtilConfig.getList(this.config.getNode(), String.class, "inventory", "open-commands");
         this.items = Maps.newHashMap();
+        this.updateTicks = this.config.getNode().node("inventory", "update-ticks").getInt(0);
 
         for (ConfigurationNode value : this.config.getNode().node("inventory", "items").childrenMap().values()) {
             int positionX = value.node("positionX").getInt(1);
@@ -91,8 +94,15 @@ public class Menu {
         ((CommandHandler) server.getCommandManager()).registerCommand(new MenuAliasCommand(this));
     }
 
+    public Map<Pair<Integer, Integer>, ConfigItem> getItems() {
+        return this.items;
+    }
+
     public void open(EnvyPlayer<EntityPlayerMP> player) {
-        new GenericUI(player, this.name, this.height, this.allowNaturalClose, this.items, this.closeCommands);
+        GenericUI generic = new GenericUI(this, player, this.name, this.height, this.updateTicks,
+                this.allowNaturalClose, this.items,
+                this.closeCommands);
+        MenuUpdateTask.addOpenUI(player.getParent(), generic);
 
         UtilForgeConcurrency.runSync(() -> {
             for (String command : this.openCommands) {
