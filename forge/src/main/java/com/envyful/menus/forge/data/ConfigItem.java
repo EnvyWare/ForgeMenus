@@ -178,7 +178,6 @@ public class ConfigItem {
 
     private void handleClick(EnvyPlayer<EntityPlayerMP> player, GenericUI ui, Displayable.ClickType clickType,
                              List<String> commands) {
-        System.out.println("CLICK TYPE: " + clickType);
         if (ui.isClicked()) {
             return;
         }
