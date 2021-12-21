@@ -69,7 +69,13 @@ public class RequirementFactory {
     }
 
     public static ItemRequirement from(ConfigurationNode node) {
-        RequirementInfo type = ITEM_REQUIREMENTS.get(node.node("type").getString());
+        String typeData = node.node("type").getString("none");
+
+        if (typeData.equalsIgnoreCase("none")) {
+            return null;
+        }
+
+        RequirementInfo type = ITEM_REQUIREMENTS.get(typeData);
 
         if (type == null) {
             return null;
