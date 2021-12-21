@@ -14,6 +14,7 @@ import com.envyful.menus.forge.data.impl.PermissionRequirement;
 import com.envyful.menus.forge.ui.GenericUI;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Items;
@@ -21,7 +22,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.configurate.ConfigurationNode;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public class ConfigItem {
 
@@ -31,7 +34,7 @@ public class ConfigItem {
     private final int damage;
     private final String tooltip;
     private final List<String> lore;
-    private final List<String> commands;
+    private final Map<Displayable.ClickType, List<String>> commands;
     private final List<ItemRequirement> requirements;
     private final ConfigItem elseItem;
     private final ConfigurationNode node;
@@ -43,8 +46,30 @@ public class ConfigItem {
         this.damage = value.node("damage").getInt(0);
         this.tooltip = value.node("tooltip").getString("");
         this.lore = UtilConfig.getList(value, String.class, "lore");
-        this.commands = UtilConfig.getList(value, String.class, "commands");
         this.requirements = Lists.newArrayList();
+        this.commands = Maps.newHashMap();
+
+        if (value.hasChild("commands")) {
+            List<String> commandList = UtilConfig.getList(value, String.class, "commands");
+            this.commands.put(Displayable.ClickType.RIGHT, commandList);
+            this.commands.put(Displayable.ClickType.SHIFT_RIGHT, commandList);
+            this.commands.put(Displayable.ClickType.LEFT, commandList);
+            this.commands.put(Displayable.ClickType.SHIFT_LEFT, commandList);
+            this.commands.put(Displayable.ClickType.MIDDLE, commandList);
+        }
+
+        if (value.hasChild("click-commands")) {
+            for (ConfigurationNode commandNode : value.node("click-commands").childrenMap().values()) {
+                Displayable.ClickType clickType = Displayable.ClickType.valueOf(commandNode.node("type").getString());
+
+                if (clickType == null) {
+                    continue;
+                }
+
+                this.commands.computeIfAbsent(clickType, ___ -> Lists.newArrayList())
+                        .addAll(UtilConfig.getList(commandNode, String.class, "commands"));
+            }
+        }
 
         if (value.hasChild("requirement")) {
             this.requirements.add(new PermissionRequirement(value.node("requirement").getString()));
@@ -83,7 +108,7 @@ public class ConfigItem {
 
         for (ConfigurationNode enchants : this.node.node("enchants").childrenMap().values()) {
             builder.enchant(Enchantment.getEnchantmentByID(enchants.node("id").getInt()),
-                            enchants.node("level").getInt());
+                    enchants.node("level").getInt());
         }
 
         for (String flags : UtilConfig.getList(node, String.class, "flags")) {
@@ -126,7 +151,8 @@ public class ConfigItem {
 
         return GuiFactory.displayableBuilder(ItemStack.class).itemStack(itemStack)
                 .clickHandler((envyPlayer, clickType) ->
-                        this.handleClick((EnvyPlayer<EntityPlayerMP>) envyPlayer, ui, clickType, commands)).build();
+                        this.handleClick((EnvyPlayer<EntityPlayerMP>) envyPlayer, ui, clickType,
+                                commands.getOrDefault(clickType, Collections.emptyList()))).build();
     }
 
     private boolean canSee(EntityPlayerMP player) {
@@ -152,6 +178,7 @@ public class ConfigItem {
 
     private void handleClick(EnvyPlayer<EntityPlayerMP> player, GenericUI ui, Displayable.ClickType clickType,
                              List<String> commands) {
+        System.out.println("CLICK TYPE: " + clickType);
         if (ui.isClicked()) {
             return;
         }
