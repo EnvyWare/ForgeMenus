@@ -10,7 +10,10 @@ import net.minecraft.util.text.TextComponentString;
 
 @Command(
         value = "menus",
-        description = "/menus reload <name> | /menu load <path> | /menu list | /menu open <name>"
+        description = "/menus reload <name> | /menu load <path> | /menu list | /menu open <name>",
+        aliases = {
+                "menu"
+        }
 )
 @Permissible("menus.command.menu")
 @SubCommands({
