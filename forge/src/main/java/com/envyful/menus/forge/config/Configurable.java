@@ -1,6 +1,6 @@
 package com.envyful.menus.forge.config;
 
-import org.spongepowered.configurate.ConfigurationNode;
+import org.spongepowered.configurate.CommentedConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 import org.spongepowered.configurate.yaml.YamlConfigurationLoader;
 
@@ -15,7 +15,7 @@ public abstract class Configurable {
     private final String name;
     private final Path file;
 
-    private ConfigurationNode node;
+    private CommentedConfigurationNode node;
     private YamlConfigurationLoader loader;
 
     public Configurable(String name) {
@@ -34,11 +34,11 @@ public abstract class Configurable {
         return this.loader;
     }
 
-    public ConfigurationNode getNode() {
+    public CommentedConfigurationNode getNode() {
         return this.node;
     }
 
-    public void setNode(ConfigurationNode node) {
+    public void setNode(CommentedConfigurationNode node) {
         this.node = node;
     }
 
