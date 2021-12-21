@@ -17,6 +17,7 @@ public class MenuConfig extends Configurable {
 
     @Override
     public void populate() throws SerializationException {
+        this.getNode().node("aliases").set(Lists.newArrayList("examplemenu", "forgeexamplemenu"));
         this.getNode().node("inventory", "identifier").set("example_menu");
         this.getNode().node("inventory", "name").set("Example");
         this.getNode().node("inventory", "height").set(2);

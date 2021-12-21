@@ -27,6 +27,7 @@ public class Menu {
 
     private MenuConfig config;
     private String identifier;
+    private List<String> commandAliases;
     private String name;
     private int height;
     private boolean allowNaturalClose;
@@ -55,8 +56,13 @@ public class Menu {
         this.config = new MenuConfig(fileIdentifier + ".yml");
     }
 
+    public List<String> getCommandAliases() {
+        return this.commandAliases;
+    }
+
     public void loadItems() {
         this.identifier = this.config.getNode().node("inventory", "identifier").getString();
+        this.commandAliases = UtilConfig.getList(this.config.getNode(), String.class, "aliases");
         this.name = this.config.getNode().node("inventory", "name").getString();
         this.height = this.config.getNode().node("inventory", "height").getInt();
         this.updateTicks = this.config.getNode().node("inventory", "update-ticks").getInt(-1);

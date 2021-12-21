@@ -11,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
 
+import java.util.List;
+
 public class MenuAliasCommand extends CommandBase {
 
     private final Menu menu;
@@ -22,6 +24,11 @@ public class MenuAliasCommand extends CommandBase {
     @Override
     public String getName() {
         return this.menu.getIdentifier();
+    }
+
+    @Override
+    public List<String> getAliases() {
+        return this.menu.getCommandAliases();
     }
 
     @Override
