@@ -71,12 +71,11 @@ public class ConvertCommand {
         MenuConfig menuConfig = new MenuConfig(args[1]);
         CommentedConfigurationNode inventory = menuConfig.getNode().node("inventory");
 
-        inventory.comment("AUTO GENERATED MENU CONFIG FROM VIRTUAL CHEST FILE: " + args[0] + "\n" +
-        " \n" +
-        "If there is an issue with the generation of this file please seek assistance in my Discord: \n" +
-        "https://discord.gg/7vqgtrjDGw\n");
-
         try {
+            inventory.parent().node("data").set("1 - #AUTO GENERATED MENU CONFIG FROM VIRTUAL CHEST FILE: " + args[0] + "\n" +
+                    "#\n" +
+                    "# If there is an issue with the generation of this file please seek assistance in my Discord: \n" +
+                    "# https://discord.gg/7vqgtrjDGw\n");
             inventory.node("identifier").set(args[0]);
             inventory.node("close-commands").set(Lists.newArrayList());
             inventory.node("name").set(menuData.node("TextTitle").getString("No Title Given"));
