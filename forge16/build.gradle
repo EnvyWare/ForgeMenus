@@ -14,12 +14,12 @@ buildscript {
     }
 }
 
-forgeVersion = '1.12.2'
+forgeVersion = '1.16.5'
 
 apply plugin: 'net.minecraftforge.gradle'
 
 minecraft {
-    mappings channel: 'snapshot', version: '20180814-1.12'
+    mappings channel: 'snapshot', version: '20210309-1.16.5'
 }
 
 sourceSets.main.resources { srcDir 'src/generated/resources' }
@@ -38,7 +38,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2854'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.22'
 
     compileOnly 'com.github.Pixelmon-Development.ForgePlaceholderAPI:api:0.0.1'
     compileOnly 'com.github.Pixelmon-Development.ForgePlaceholderAPI:api:0.0.1'
@@ -46,8 +46,8 @@ dependencies {
     shadow 'org.atteo.classindex:classindex:3.4'
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.1.2'
     shadow group: 'org.spongepowered', name: 'configurate-hocon', version: '4.1.2'
-    shadow group: 'com.github.Daniel-Forge-Development.API', name: 'commons', version: '1.5.7'
-    shadow group: 'com.github.Daniel-Forge-Development.API', name: 'forge', version: '1.5.7'
+    shadow group: 'com.github.Daniel-Forge-Development.API', name: 'commons', version: '1.7.6'
+    shadow group: 'com.github.Daniel-Forge-Development.API', name: 'forge16', version: '1.7.6'
 
     annotationProcessor 'org.atteo.classindex:classindex:3.4'
 }
