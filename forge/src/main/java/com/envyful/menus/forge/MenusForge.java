@@ -36,7 +36,7 @@ import java.util.Map;
 public class MenusForge {
 
     protected static final String MOD_ID = "menus";
-    protected static final String VERSION = "2.0.0";
+    protected static final String VERSION = "2.0.1";
 
     @Mod.Instance(MOD_ID)
     private static MenusForge instance;
