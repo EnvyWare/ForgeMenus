@@ -40,14 +40,13 @@ repositories {
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.2.22'
 
-    compileOnly 'com.github.Pixelmon-Development.ForgePlaceholderAPI:api:0.0.1'
-    compileOnly 'com.github.Pixelmon-Development.ForgePlaceholderAPI:api:0.0.1'
+    compileOnly 'com.github.Daniel-Forge-Development.ForgePlaceholderAPI:api:2.0.0'
 
     shadow 'org.atteo.classindex:classindex:3.4'
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.1.2'
     shadow group: 'org.spongepowered', name: 'configurate-hocon', version: '4.1.2'
-    shadow group: 'com.github.Daniel-Forge-Development.API', name: 'commons', version: '1.7.6'
-    shadow group: 'com.github.Daniel-Forge-Development.API', name: 'forge16', version: '1.7.6'
+    shadow group: 'com.github.Daniel-Forge-Development.API', name: 'commons', version: '1.7.8'
+    shadow group: 'com.github.Daniel-Forge-Development.API', name: 'forge16', version: '1.7.8'
 
     annotationProcessor 'org.atteo.classindex:classindex:3.4'
 }
