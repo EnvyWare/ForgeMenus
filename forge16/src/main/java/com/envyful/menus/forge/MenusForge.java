@@ -20,10 +20,10 @@ import com.google.common.collect.Maps;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
-import net.minecraftforge.fml.server.ServerLifecycleHooks;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,19 +59,6 @@ public class MenusForge {
 
         GuiFactory.setPlatformFactory(new ForgeGuiFactory());
 
-        this.commandFactory.registerCompleter(new MenuTabCompleter());
-
-        this.commandFactory.registerInjector(Menu.class, (sender, args) -> {
-            Menu menu = this.getMenu(args[0]);
-
-            if(menu == null) {
-                sender.sendMessage(new StringTextComponent("Menu doesn't exist!"), Util.DUMMY_UUID);
-                return null;
-            }
-
-            return menu;
-        });
-
         UtilConcurrency.runAsync(() -> {
             File file = new File(MenuConfig.PATH);
 
@@ -85,8 +72,6 @@ public class MenusForge {
                 this.addMenu(new Menu("example"));
             }
         });
-
-        this.commandFactory.registerCommand(ServerLifecycleHooks.getCurrentServer(), new MenuCommand());
 
         new ForgeTaskBuilder()
                 .task(new MenuUpdateTask())
@@ -105,6 +90,24 @@ public class MenusForge {
         }
     }
 
+    @SubscribeEvent
+    public void onCommandRegistration(RegisterCommandsEvent event) {
+        this.commandFactory.registerCompleter(new MenuTabCompleter());
+
+        this.commandFactory.registerInjector(Menu.class, (sender, args) -> {
+            Menu menu = this.getMenu(args[0]);
+
+            if(menu == null) {
+                sender.sendMessage(new StringTextComponent("Menu doesn't exist!"), Util.DUMMY_UUID);
+                return null;
+            }
+
+            return menu;
+        });
+
+        this.commandFactory.registerCommand(event.getDispatcher(), new MenuCommand());
+    }
+
     public static MenusForge getInstance() {
         return instance;
     }
@@ -116,7 +119,6 @@ public class MenusForge {
     public List<String> getLoadedNames() {
         return Lists.newArrayList(this.loadedMenus.keySet());
     }
-
 
     public void handleDirectory(File file) {
         if(file.listFiles() == null) {
