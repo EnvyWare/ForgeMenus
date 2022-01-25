@@ -2,21 +2,29 @@ package com.envyful.menus.forge.data;
 
 import com.envyful.api.config.util.UtilConfig;
 import com.envyful.api.forge.concurrency.UtilForgeConcurrency;
+import com.envyful.api.forge.player.util.UtilPlayer;
 import com.envyful.api.forge.server.UtilForgeServer;
 import com.envyful.api.player.EnvyPlayer;
 import com.envyful.api.type.Pair;
+import com.envyful.menus.forge.MenusForge;
 import com.envyful.menus.forge.config.MenuConfig;
 import com.envyful.menus.forge.data.task.MenuUpdateTask;
 import com.envyful.menus.forge.ui.GenericUI;
 import com.envyful.papi.api.util.UtilPlaceholder;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import com.mojang.brigadier.tree.CommandNode;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.server.ServerLifecycleHooks;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Menu {
@@ -100,12 +108,54 @@ public class Menu {
     }
 
     private void registerCommand() {
-        if (!this.directAccess) {
+        if (!this.directAccess || this.commandAliases.size() == 0) {
             return;
         }
 
+
+
         MinecraftServer server = ServerLifecycleHooks.getCurrentServer();
-        /*server.getCommandManager().getDispatcher().register(new MenuAliasCommand(this));*/ //TODO:
+
+        LiteralCommandNode<CommandSource> register = server.getCommandManager().getDispatcher().register(
+                Commands.literal(this.commandAliases.get(0))
+                        .requires(commandSource -> commandSource.getEntity() instanceof ServerPlayerEntity && UtilPlayer.hasPermission((ServerPlayerEntity) commandSource.getEntity(), this.getPermission()))
+                        .executes(context -> {
+                            open(MenusForge.getInstance().getPlayerManager().getPlayer((ServerPlayerEntity) context.getSource().getEntity()));
+                            return 1;
+                        })
+        );
+
+        for (int i = 1; i < this.commandAliases.size(); i++) {
+            server.getCommandManager().getDispatcher().getRoot().addChild(buildRedirect(
+                    this.commandAliases.get(i),
+                    register
+            ));
+        }
+    }
+
+    /**
+     * Returns a literal node that redirects its execution to
+     * the given destination node.
+     *
+     * @param alias the command alias
+     * @param destination the destination node
+     * @return the built node
+     */
+    public static LiteralCommandNode<CommandSource> buildRedirect(
+            final String alias, final LiteralCommandNode<CommandSource> destination) {
+        // Redirects only work for nodes with children, but break the top argument-less command.
+        // Manually adding the root command after setting the redirect doesn't fix it.
+        // See https://github.com/Mojang/brigadier/issues/46). Manually clone the node instead.
+        LiteralArgumentBuilder<CommandSource> builder = LiteralArgumentBuilder
+                .<CommandSource>literal(alias.toLowerCase(Locale.ENGLISH))
+                .requires(destination.getRequirement())
+                .forward(
+                        destination.getRedirect(), destination.getRedirectModifier(), destination.isFork())
+                .executes(destination.getCommand());
+        for (CommandNode<CommandSource> child : destination.getChildren()) {
+            builder.then(child);
+        }
+        return builder.build();
     }
 
     public Map<Pair<Integer, Integer>, ConfigItem> getItems() {
