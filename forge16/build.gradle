@@ -46,7 +46,9 @@ dependencies {
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
     shadow group: 'org.spongepowered', name: 'configurate-hocon', version: '4.0.0'
     shadow group: 'com.github.EnvyWare.API', name: 'commons', version: '1.9.7'
-    shadow group: 'com.github.EnvyWare.API', name: 'forge16', version: '1.9.7'
+    shadow (group: 'com.github.EnvyWare.API', name: 'forge16', version: '1.9.7') {
+        transitive = false
+    }
 
     annotationProcessor 'org.atteo.classindex:classindex:3.4'
 }
