@@ -13,7 +13,7 @@ showAsResourcePack=false
 
 [[mods]]
   modId="menus"
-  version="2.0.2"
+  version="2.0.3"
   displayName="Menus Forge"
   displayURL="https://discord.gg/7vqgtrjDGw"
   credits="Envyful"
