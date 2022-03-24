@@ -14,6 +14,7 @@ import com.envyful.api.forge.command.completion.player.PlayerTabCompleter;
 import com.envyful.menus.forge.MenusForge;
 import com.envyful.menus.forge.data.Menu;
 import com.envyful.menus.forge.data.MenuTabCompleter;
+import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.StringTextComponent;
@@ -27,8 +28,12 @@ import net.minecraft.util.text.StringTextComponent;
 public class ForceOpenCommand {
 
     @CommandProcessor
-    public void run(@Sender ServerPlayerEntity sender, @Completable(MenuTabCompleter.class) @Argument Menu menu,
+    public void run(@Sender ICommandSource sender, @Completable(MenuTabCompleter.class) @Argument Menu menu,
                     @Completable(PlayerTabCompleter.class) @ExcludeSelfCompletion @Argument ServerPlayerEntity target) {
+        if (sender instanceof ServerPlayerEntity) {
+            return;
+        }
+
         menu.open(MenusForge.getInstance().getPlayerManager().getPlayer(target));
         sender.sendMessage(new StringTextComponent(UtilChatColour.translateColourCodes('&',
                 MenusForge.getInstance().getLocale().getForceOpened()
