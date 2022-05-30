@@ -31,10 +31,6 @@ repositories {
     }
 
     maven { url 'https://jitpack.io' }
-
-    flatDir {
-        dirs '../../Libraries/'
-    }
 }
 
 dependencies {
@@ -45,8 +41,10 @@ dependencies {
     shadow 'org.atteo.classindex:classindex:3.4'
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
     shadow group: 'org.spongepowered', name: 'configurate-hocon', version: '4.0.0'
-    shadow group: 'com.github.EnvyWare.API', name: 'commons', version: '1.9.7'
-    shadow (group: 'com.github.EnvyWare.API', name: 'forge16', version: '1.9.7') {
+    shadow (group: 'com.github.EnvyWare.API', name: 'commons', version: '2.4.7')  {
+        transitive = false
+    }
+    shadow (group: 'com.github.EnvyWare.API', name: 'forge16', version: '2.4.7') {
         transitive = false
     }
 
