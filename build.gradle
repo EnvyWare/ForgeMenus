@@ -39,6 +39,9 @@ subprojects {
     }
 
     task versionedRelease(type: Copy) {
+        delete fileTree('../release/') {
+            include '**/*.jar'
+        }
         group "build"
         from('./build/libs/' + rootProject.name + '-Forge.jar')
         into('../release/')
