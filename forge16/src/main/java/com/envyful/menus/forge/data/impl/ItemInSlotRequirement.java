@@ -1,6 +1,7 @@
 package com.envyful.menus.forge.data.impl;
 
 import com.envyful.api.config.util.UtilConfig;
+import com.envyful.api.forge.chat.UtilChatColour;
 import com.envyful.api.forge.config.UtilConfigItem;
 import com.envyful.api.forge.items.ItemBuilder;
 import com.envyful.menus.forge.data.ItemRequirement;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Requirement("itemstack_in_slot")
 public class ItemInSlotRequirement implements ItemRequirement {
@@ -30,7 +32,7 @@ public class ItemInSlotRequirement implements ItemRequirement {
                 .type(itemType)
                 .amount(amount)
                 .name(name)
-                .lore(lore)
+                .lore(lore.stream().map(UtilChatColour::colour).collect(Collectors.toList()))
                 .build();
     }
 

@@ -21,6 +21,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.util.text.ITextComponent;
 import org.spongepowered.configurate.ConfigurationNode;
 
 import java.util.Collections;
@@ -103,7 +104,7 @@ public class ConfigItem {
         ItemBuilder builder = new ItemBuilder()
                 .type(itemType == null ? Items.PLAYER_HEAD : itemType)
                 .amount(amount)
-                .name(UtilChatColour.translateColourCodes('&', UtilPlaceholder.replaceIdentifiers(player, this.name)))
+                .name(UtilChatColour.colour(UtilPlaceholder.replaceIdentifiers(player, this.name)))
                 .lore(this.getLore(player));
 
         for (ConfigurationNode enchants : this.node.node("enchants").childrenMap().values()) {
@@ -165,11 +166,11 @@ public class ConfigItem {
         return true;
     }
 
-    private List<String> getLore(ServerPlayerEntity player) {
-        List<String> translatedLore = Lists.newArrayList();
+    private List<ITextComponent> getLore(ServerPlayerEntity player) {
+        List<ITextComponent> translatedLore = Lists.newArrayList();
 
         for (String s : this.lore) {
-            translatedLore.add(UtilChatColour.translateColourCodes('&',
+            translatedLore.add(UtilChatColour.colour(
                     UtilPlaceholder.replaceIdentifiers(player, s)));
         }
 
