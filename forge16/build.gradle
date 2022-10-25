@@ -41,10 +41,10 @@ dependencies {
     shadow 'org.atteo.classindex:classindex:3.4'
     shadow group: 'org.spongepowered', name: 'configurate-yaml', version: '4.0.0'
     shadow group: 'org.spongepowered', name: 'configurate-hocon', version: '4.0.0'
-    shadow (group: 'com.github.EnvyWare.API', name: 'commons', version: '3.2.0')  {
+    shadow (group: 'com.github.EnvyWare.API', name: 'commons', version: '3.8.0')  {
         transitive = false
     }
-    shadow (group: 'com.github.EnvyWare.API', name: 'forge16', version: '3.2.0') {
+    shadow (group: 'com.github.EnvyWare.API', name: 'forge16', version: '3.8.0') {
         transitive = false
     }
 
