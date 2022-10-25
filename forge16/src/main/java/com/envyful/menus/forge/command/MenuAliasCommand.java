@@ -9,7 +9,6 @@ import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Util;
-import net.minecraft.util.text.StringTextComponent;
 
 import java.util.List;
 
@@ -41,7 +40,7 @@ public class MenuAliasCommand { //TODO:
         ServerPlayerEntity player = (ServerPlayerEntity) sender;
 
         if (!UtilPlayer.hasPermission(player, this.menu.getPermission())) {
-            sender.sendMessage(new StringTextComponent(UtilChatColour.translateColourCodes('&', MenusForge.getInstance().getLocale().getNoPermission())), Util.DUMMY_UUID);
+            sender.sendMessage(UtilChatColour.colour(MenusForge.getInstance().getLocale().getNoPermission()), Util.DUMMY_UUID);
             return;
         }
 

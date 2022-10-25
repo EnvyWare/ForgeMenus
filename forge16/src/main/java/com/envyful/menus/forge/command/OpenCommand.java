@@ -14,7 +14,6 @@ import com.envyful.menus.forge.data.Menu;
 import com.envyful.menus.forge.data.MenuTabCompleter;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Util;
-import net.minecraft.util.text.StringTextComponent;
 
 @Command(
         value = "open",
@@ -27,7 +26,7 @@ public class OpenCommand {
     @CommandProcessor
     public void run(@Sender ServerPlayerEntity sender, @Completable(MenuTabCompleter.class) @Argument Menu menu, String[] args) {
         if (!UtilPlayer.hasPermission(sender, menu.getPermission())) {
-            sender.sendMessage(new StringTextComponent(UtilChatColour.translateColourCodes('&', MenusForge.getInstance().getLocale().getNoPermission())), Util.DUMMY_UUID);
+            sender.sendMessage(UtilChatColour.colour(MenusForge.getInstance().getLocale().getNoPermission()), Util.DUMMY_UUID);
             return;
         }
 

@@ -17,7 +17,6 @@ import com.envyful.menus.forge.data.MenuTabCompleter;
 import net.minecraft.command.ICommandSource;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.Util;
-import net.minecraft.util.text.StringTextComponent;
 
 @Command(
         value = "forceopen",
@@ -35,9 +34,9 @@ public class ForceOpenCommand {
         }
 
         menu.open(MenusForge.getInstance().getPlayerManager().getPlayer(target));
-        sender.sendMessage(new StringTextComponent(UtilChatColour.translateColourCodes('&',
+        sender.sendMessage(UtilChatColour.colour(
                 MenusForge.getInstance().getLocale().getForceOpened()
                         .replace("%target%", target.getName().getString())
-                        .replace("%menu%", menu.getIdentifier()))), Util.DUMMY_UUID);
+                        .replace("%menu%", menu.getIdentifier())), Util.DUMMY_UUID);
     }
 }

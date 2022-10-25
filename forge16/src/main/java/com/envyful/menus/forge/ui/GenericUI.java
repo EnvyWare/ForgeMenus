@@ -46,8 +46,7 @@ public class GenericUI {
         this.placeElements(elements, data);
 
         GuiFactory.guiBuilder()
-                .title(UtilChatColour.translateColourCodes('&',
-                        UtilPlaceholder.replaceIdentifiers(this.player.getParent(), name)))
+                .title(UtilChatColour.colour(UtilPlaceholder.replaceIdentifiers(this.player.getParent(), name)))
                 .addPane(this.pane)
                 .height(height)
                 .setPlayerManager(MenusForge.getInstance().getPlayerManager())
@@ -75,8 +74,7 @@ public class GenericUI {
         if (!this.allowClose) {
             UtilForgeConcurrency.runSync(() -> {
                 GuiFactory.guiBuilder()
-                        .title(UtilChatColour.translateColourCodes('&',
-                                UtilPlaceholder.replaceIdentifiers(this.player.getParent(), name)))
+                        .title(UtilChatColour.colour(UtilPlaceholder.replaceIdentifiers(this.player.getParent(), name)))
                         .addPane(this.pane)
                         .height(height)
                         .setPlayerManager(MenusForge.getInstance().getPlayerManager())
