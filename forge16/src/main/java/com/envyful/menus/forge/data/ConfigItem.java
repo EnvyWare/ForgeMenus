@@ -201,7 +201,7 @@ public class ConfigItem {
 
             if (command.equalsIgnoreCase("%close%")) {
                 ui.setAllowClose(true);
-                player.getParent().closeScreen();
+                UtilForgeConcurrency.runSync(() -> player.getParent().closeScreen());
                 closed = true;
                 continue;
             }
